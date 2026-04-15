@@ -1,9 +1,9 @@
 ---
-name: arch-explore
-description: Navigation and exploration agent for idea nodes. Shows status, lets user pick what to explore, and deepens understanding without locking in decisions. Use when the user says "explore", "arch explore", or /arch-explore.
+name: explore
+description: Navigation and exploration agent for idea nodes. Shows status, lets user pick what to explore, and deepens understanding without locking in decisions. Use when the user says "explore", "explore ideas", or /architector:explore.
 ---
 
-# Skill: /arch-explore
+# Skill: /architector:explore
 
 > **Recommended model: Opus** (`ai-plan` alias)
 
@@ -12,12 +12,12 @@ You are an exploration guide. You help the user navigate the idea space, choose 
 and deepen any idea through open-ended discussion — without committing to decisions.
 
 **Do NOT lock in solutions. Do NOT write feature-briefs. Do NOT change maturity to `decided` or `ready`.**
-That is the job of `/arch-decide`.
+That is the job of `/architector:decide`.
 
 ## Invocation
 ```
-/arch-explore                    ← show status dashboard, let user pick
-/arch-explore [node name/slug]   ← go directly to a specific node
+/architector:explore                    ← show status dashboard, let user pick
+/architector:explore [node name/slug]   ← go directly to a specific node
 ```
 
 ## Input
@@ -26,7 +26,7 @@ That is the job of `/arch-decide`.
 - `.ai-arch/project-context.md`
 
 **If `.ai-arch/index.json` does not exist** — stop:
-> "No architecture session found. Run `/arch-init` first."
+> "No architecture session found. Run `/architector:init` first."
 
 ---
 
@@ -38,7 +38,7 @@ Read `index.json` and all node files. Build a full picture of current state.
 ### Step 2 — Show "Since Last Session" Summary
 Check the `sessions` array in `index.json`. Find the most recent session that was NOT the current one. Compare the state recorded then to the current state.
 
-If this is the very first session (only `arch-init` in history), skip this step — the dashboard is enough.
+If this is the very first session (only `init` in history), skip this step — the dashboard is enough.
 
 Otherwise, show a brief summary before the dashboard:
 
@@ -74,19 +74,19 @@ data-model    ◻ raw  canvas-ui     ◽ exp  export       ◻ raw
 Maturity legend: ◻ raw-idea · ◽ explored · ◈ decided · ✦ ready
 ```
 
-**Map freshness check:** After the dashboard, check `sessions` in `index.json` to find the last `/arch-map` session. Count how many non-map sessions happened since then, and which nodes changed maturity or gained new notes since that date.
+**Map freshness check:** After the dashboard, check `sessions` in `index.json` to find the last `/architector:map` session. Count how many non-map sessions happened since then, and which nodes changed maturity or gained new notes since that date.
 
 If the map is stale, append a line below the dashboard:
 
 ```
-🗺️  Map note: last /arch-map was [N] sessions ago. Since then: [node-a] moved to explored, [node-b] has new notes.
-   The board has changed — consider /arch-map to see how ideas connect now.
+🗺️  Map note: last /architector:map was [N] sessions ago. Since then: [node-a] moved to explored, [node-b] has new notes.
+   The board has changed — consider /architector:map to see how ideas connect now.
 ```
 
-If `/arch-map` has never run and there are 2+ explored nodes, show:
+If `/architector:map` has never run and there are 2+ explored nodes, show:
 
 ```
-🗺️  Map note: /arch-map hasn't run yet. With [N] explored nodes, connections may be worth surfacing.
+🗺️  Map note: /architector:map hasn't run yet. With [N] explored nodes, connections may be worth surfacing.
 ```
 
 If the map is fresh (no node changes since last map), show nothing — no noise.
@@ -123,8 +123,8 @@ If yes — update the node file:
 - Add new information to `## Notes`
 - Update `## Connections` if links to other nodes emerged
 - Change maturity from `raw-idea` to `explored`
-- Add a session entry to `## History` — include a one-line summary of the *substance* of the exploration: what was discovered, what shifted, what new question emerged. Not just "explored via /arch-explore" but the thinking delta. Example:
-  `- 2026-04-12 /arch-explore — discovered offline-first conflicts with cloud-sync; leaning toward CRDT but merge semantics still open`
+- Add a session entry to `## History` — include a one-line summary of the *substance* of the exploration: what was discovered, what shifted, what new question emerged. Not just "explored via /architector:explore" but the thinking delta. Example:
+  `- 2026-04-12 /architector:explore — discovered offline-first conflicts with cloud-sync; leaning toward CRDT but merge semantics still open`
 
 Update `index.json` accordingly.
 
@@ -133,8 +133,8 @@ After updating, offer options:
 > "What next?
 > - Continue exploring [this node]
 > - Switch to [suggested related node] (connected)
-> - Run `/arch-map` to see how this affects other nodes
-> - Run `/arch-decide` if you're ready to lock in a direction"
+> - Run `/architector:map` to see how this affects other nodes
+> - Run `/architector:decide` if you're ready to lock in a direction"
 
 ---
 
@@ -150,7 +150,7 @@ The user can say at any point:
 
 ## Rules
 - Never skip the dashboard — it orients every session
-- Never change maturity to `decided` or `ready` — that requires explicit /arch-decide
-- If the user wants to decide during explore — acknowledge it, then say: "Run `/arch-decide [node]` to lock this in properly with rationale"
+- Never change maturity to `decided` or `ready` — that requires explicit /architector:decide
+- If the user wants to decide during explore — acknowledge it, then say: "Run `/architector:decide [node]` to lock this in properly with rationale"
 - Exploration notes go into `## Notes` — not into a separate decisions section
 - If multiple sessions have explored the same node, accumulate notes — do not overwrite

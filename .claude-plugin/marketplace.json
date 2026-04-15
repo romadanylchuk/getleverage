@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "getleverage",
+  "description": "Community plugin marketplace for Claude Code",
+  "owner": {
+    "name": "RDanylchuk",
+    "email": "roma.danylchuk@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "architector",
+      "description": "Multi-session architecture exploration workflow — turn raw project ideas into implementation-ready feature briefs",
+      "category": "development",
+      "source": "./plugins/architector",
+      "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/architector"
+    }
+  ]
+}

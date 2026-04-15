@@ -1,9 +1,9 @@
 ---
-name: arch-map
-description: Relationship mapping agent that visualises connections between idea nodes, surfaces dependencies, and supports merge/split decisions. Available at any stage. Use when the user says "arch map", "show connections", "map ideas", or /arch-map.
+name: map
+description: Relationship mapping agent that visualises connections between idea nodes, surfaces dependencies, and supports merge/split decisions. Available at any stage. Use when the user says "map", "show connections", "map ideas", or /architector:map.
 ---
 
-# Skill: /arch-map
+# Skill: /architector:map
 
 > **Recommended model: Sonnet** (`ai-build` alias)
 
@@ -16,9 +16,9 @@ It does not make decisions. It makes relationships visible so better decisions c
 
 ## Invocation
 ```
-/arch-map                        ← map all nodes
-/arch-map [node name/slug]       ← map one node and its neighbours
-/arch-map [node-a] [node-b]      ← compare two nodes, explore merge/split
+/architector:map                        ← map all nodes
+/architector:map [node name/slug]       ← map one node and its neighbours
+/architector:map [node-a] [node-b]      ← compare two nodes, explore merge/split
 ```
 
 ## Input
@@ -27,7 +27,7 @@ It does not make decisions. It makes relationships visible so better decisions c
 - `.ai-arch/project-context.md`
 
 **If `.ai-arch/index.json` does not exist** — stop:
-> "No architecture session found. Run `/arch-init` first."
+> "No architecture session found. Run `/architector:init` first."
 
 ---
 
@@ -51,7 +51,7 @@ the user may have already noted "might merge with X" or "depends on Y".
 
 ### Step 3 — Present the Map
 
-**For full map (`/arch-map`):**
+**For full map (`/architector:map`):**
 
 ```
 🗺️  Idea Map — [Project Name]
@@ -80,11 +80,11 @@ Conflicts
      → These need alignment before either can reach `decided`
 ```
 
-**For node map (`/arch-map [node]`):**
+**For node map (`/architector:map [node]`):**
 Show only that node, its direct connections, and second-degree connections.
 Highlight which connected nodes are blocking this one and vice versa.
 
-**For compare (`/arch-map [a] [b]`):**
+**For compare (`/architector:map [a] [b]`):**
 Show both nodes side by side. Analyse overlap.
 Explicitly answer: should these merge, split, stay as-is, or be linked?
 
@@ -111,8 +111,8 @@ Based on the map, suggest what to work on:
 
 > "Suggested next steps:
 > - Resolve conflict between 'offline-first' and 'cloud-sync' before either can proceed
-> - 'tech-stack' is blocking 3 other nodes — prioritise /arch-decide on it
-> - 'realtime-sync' + 'collaboration' are strong merge candidates — worth discussing in /arch-explore"
+> - 'tech-stack' is blocking 3 other nodes — prioritise /architector:decide on it
+> - 'realtime-sync' + 'collaboration' are strong merge candidates — worth discussing in /architector:explore"
 
 ---
 
@@ -123,21 +123,21 @@ When the user wants to act on a merge or split suggestion:
 **Merge flow:**
 1. Show both nodes side by side
 2. Ask: "What should the merged node be called? What's the unified description?"
-3. Combine notes, connections, and history into a new node file. Add a history entry to the merged node: `- [date] /arch-map — merged from [node-a] + [node-b]; [one-line reason, e.g. "both addressed the same WebSocket transport layer"]`
+3. Combine notes, connections, and history into a new node file. Add a history entry to the merged node: `- [date] /architector:map — merged from [node-a] + [node-b]; [one-line reason, e.g. "both addressed the same WebSocket transport layer"]`
 4. Archive the two source nodes (rename to `[slug].archived.md`)
 5. Update `index.json` — remove old entries, add merged entry
 
 **Split flow:**
 1. Show the node and the two identified concerns
 2. Ask: "What should each part be called?"
-3. Create two new node files — distribute existing notes appropriately. Add a history entry to each: `- [date] /arch-map — split from [original-node]; [one-line: what this half covers]`
+3. Create two new node files — distribute existing notes appropriately. Add a history entry to each: `- [date] /architector:map — split from [original-node]; [one-line: what this half covers]`
 4. Archive the source node
 5. Update `index.json`
 
 ---
 
 ## Rules
-- /arch-map never makes decisions — it surfaces information
+- /architector:map never makes decisions — it surfaces information
 - Do not update connections without user confirmation
 - Conflict detection is not blocking — flag it, don't prevent progress
 - Merge and split are permanent structural changes — always confirm before executing

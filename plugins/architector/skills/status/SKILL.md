@@ -1,9 +1,9 @@
 ---
-name: arch-status
-description: Status reporting agent that shows current state of all idea nodes, what is blocking progress, and what can move forward. Use when the user says "arch status", "show status", "what's ready", or /arch-status.
+name: status
+description: Status reporting agent that shows current state of all idea nodes, what is blocking progress, and what can move forward. Use when the user says "status", "show status", "what's ready", or /architector:status.
 ---
 
-# Skill: /arch-status
+# Skill: /architector:status
 
 > **Recommended model: Sonnet** (`ai-build` alias)
 
@@ -15,9 +15,9 @@ work stands — what's done, what's blocking, and what the path forward looks li
 
 ## Invocation
 ```
-/arch-status              ← full status report
-/arch-status blocking     ← show only blocking nodes
-/arch-status ready        ← show only nodes ready for /arch-finalize
+/architector:status              ← full status report
+/architector:status blocking     ← show only blocking nodes
+/architector:status ready        ← show only nodes ready for /architector:finalize
 ```
 
 ## Input
@@ -26,7 +26,7 @@ work stands — what's done, what's blocking, and what the path forward looks li
 - `.ai-arch/project-context.md`
 
 **If `.ai-arch/index.json` does not exist** — stop:
-> "No architecture session found. Run `/arch-init` first."
+> "No architecture session found. Run `/architector:init` first."
 
 ---
 
@@ -51,7 +51,7 @@ PROGRESS
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🔴 BLOCKING  (must resolve before /arch-finalize)
+🔴 BLOCKING  (must resolve before /architector:finalize)
   ◻ tech-stack       raw-idea    [no sessions yet]
   ◽ data-model       explored    [1 session — open questions remain]
 
@@ -73,33 +73,33 @@ BLOCKERS ANALYSIS
   ❌ tech-stack is still raw-idea — blocking: data-model, canvas-ui, node-graph
   ⚠️  data-model has open questions — see ideas/data-model.md ## Notes
 
-READY FOR /arch-finalize?
+READY FOR /architector:finalize?
   ❌ No — [N] blocking nodes not yet at `ready` maturity
 
 SUGGESTED NEXT ACTION
-  → /arch-explore tech-stack   (highest priority — unblocks 3 nodes)
+  → /architector:explore tech-stack   (highest priority — unblocks 3 nodes)
 ```
 
 ### Step 3 — Map Freshness
-Check `sessions` in `index.json` for the last `/arch-map` entry. Count sessions and node changes since then.
+Check `sessions` in `index.json` for the last `/architector:map` entry. Count sessions and node changes since then.
 
 ```
 MAP FRESHNESS
-  Last /arch-map: [date] ([N] sessions ago)
+  Last /architector:map: [date] ([N] sessions ago)
   Since then: [node-a] → explored, [node-b] has new notes, [node-c] created
-  ⚠️  The board has shifted — /arch-map would surface new connections
+  ⚠️  The board has shifted — /architector:map would surface new connections
 ```
 
 If the map is fresh (no changes since last run), show:
 ```
 MAP FRESHNESS
-  Last /arch-map: [date] — up to date ✓
+  Last /architector:map: [date] — up to date ✓
 ```
 
-If `/arch-map` has never run:
+If `/architector:map` has never run:
 ```
 MAP FRESHNESS
-  /arch-map has never run. [N] nodes exist — connections are unknown.
+  /architector:map has never run. [N] nodes exist — connections are unknown.
 ```
 
 ### Step 4 — Open Questions Summary
@@ -119,14 +119,14 @@ DEFERRED REVIEW
   You have [N] deferred nodes. The project has matured since these were set aside — worth a second look?
   - analytics — deferred since [date] ([N] days ago). Still deferred?
   - dark-mode — deferred since [date] ([N] days ago). Still deferred?
-  → To reconsider, run /arch-explore [node] and change priority via /arch-decide
+  → To reconsider, run /architector:explore [node] and change priority via /architector:decide
 ```
 
 If the project is still early (most blocking nodes are `raw-idea`), skip this section — it's too soon to revisit deferrals.
 
 If there are no deferred nodes, skip this section.
 
-### Step 6 — Path to /arch-finalize
+### Step 6 — Path to /architector:finalize
 Calculate what is needed:
 
 ```
@@ -140,17 +140,17 @@ PATH TO FINALIZE
 
 ## Status variants
 
-**`/arch-status blocking`**
+**`/architector:status blocking`**
 Show only blocking nodes with full detail — current maturity, open questions, what they're blocking.
 
-**`/arch-status ready`**
-Show only nodes at `ready` maturity. Confirm they meet the criteria for /arch-finalize input.
+**`/architector:status ready`**
+Show only nodes at `ready` maturity. Confirm they meet the criteria for /architector:finalize input.
 
 ---
 
 ## Rules
 - This skill is read-only — do not modify any files
-- Do not suggest merges or splits — that is /arch-map's job
-- Do not suggest decisions — that is /arch-decide's job
+- Do not suggest merges or splits — that is /architector:map's job
+- Do not suggest decisions — that is /architector:decide's job
 - Be direct about what is blocking — do not soften blockers
-- If all blocking nodes are `ready` — say so clearly and suggest /arch-finalize
+- If all blocking nodes are `ready` — say so clearly and suggest /architector:finalize

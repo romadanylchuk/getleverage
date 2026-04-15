@@ -1,9 +1,9 @@
 ---
-name: arch-finalize
-description: Finalization agent that converts decided idea nodes into feature briefs and a prioritised todo list for the implementation workflow. Use when the user says "arch finalize", "generate briefs", "create todo list", or /arch-finalize.
+name: finalize
+description: Finalization agent that converts decided idea nodes into feature briefs and a prioritised todo list for the implementation workflow. Use when the user says "finalize", "generate briefs", "create todo list", or /architector:finalize.
 ---
 
-# Skill: /arch-finalize
+# Skill: /architector:finalize
 
 > **Recommended model: Opus** (`ai-plan` alias)
 
@@ -31,11 +31,11 @@ Before proceeding, verify:
 1. **All blocking nodes are at `ready` maturity.**
    If not — stop:
    > "The following blocking nodes are not ready: [list].
-   > Resolve them with /arch-explore and /arch-decide before finalizing."
+   > Resolve them with /architector:explore and /architector:decide before finalizing."
 
 2. **Non-blocking nodes not at `ready`** — do not block, but flag:
    > "Note: the following non-blocking nodes are not yet decided and will not appear in the todo list: [list].
-   > They can be added in a future /arch-finalize run. Proceed?"
+   > They can be added in a future /architector:finalize run. Proceed?"
    Wait for confirmation.
 
 3. **Deferred nodes review** — before finalizing, surface all deferred nodes with context:
@@ -45,7 +45,7 @@ Before proceeding, verify:
    >
    > Now that the architecture is clearer, should any of these move to `core` or `extension` before finalizing?
    > (They can always be added in a future run — this is your last chance to include them in this batch.)"
-   Wait for confirmation. If the user promotes a node, it must go through `/arch-explore` and `/arch-decide` before it can be included — remind them of this and pause finalization if needed.
+   Wait for confirmation. If the user promotes a node, it must go through `/architector:explore` and `/architector:decide` before it can be included — remind them of this and pause finalization if needed.
 
 ---
 
@@ -56,7 +56,7 @@ Read all `ready` nodes and propose how to group them into implementation stages.
 
 Consider:
 - Dependencies between nodes (from `index.json` connections and node `## Connections`)
-- Nodes that share the same underlying concern (from /arch-map analysis)
+- Nodes that share the same underlying concern (from /architector:map analysis)
 - Logical build order (foundation before features)
 - User hints in node files (e.g. "might merge with X")
 
@@ -75,7 +75,7 @@ Stage 02 — Core Auth
 
 Stage 03 — Canvas & Node Graph
   Covers: canvas-ui, node-graph
-  Why grouped: share the same rendering surface (noted in /arch-map)
+  Why grouped: share the same rendering surface (noted in /architector:map)
   Depends on: Stage 01
 
 Stage 04 — Export
@@ -121,7 +121,7 @@ Write `.ai-arch/todo-list.md` using the todo list template.
 ```markdown
 # Feature Brief: [Stage Name]
 _Stage: [NN]_
-_Created: [date] via /arch-finalize_
+_Created: [date] via /architector:finalize_
 _Arch nodes covered: [list of node slugs]_
 
 ## Goal

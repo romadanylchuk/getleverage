@@ -1,0 +1,12 @@
+{
+  "name": "architector",
+  "version": "1.0.0",
+  "description": "Multi-session architecture exploration workflow — turn raw project ideas into implementation-ready feature briefs",
+  "author": {
+    "name": "RDanylchuk",
+    "email": "roma.danylchuk@gmail.com"
+  },
+  "repository": "https://github.com/romadanylchuk/getleverage",
+  "license": "MIT",
+  "keywords": ["architecture", "planning", "brainstorm", "feature-briefs"]
+}

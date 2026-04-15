@@ -1,9 +1,9 @@
 ---
-name: arch-decide
-description: Decision agent that locks in a direction for an idea node, documents rationale and alternatives, and advances maturity. Use when the user says "arch decide", "lock in decision", "decide on", or /arch-decide.
+name: decide
+description: Decision agent that locks in a direction for an idea node, documents rationale and alternatives, and advances maturity. Use when the user says "decide", "lock in decision", "decide on", or /architector:decide.
 ---
 
-# Skill: /arch-decide
+# Skill: /architector:decide
 
 > **Recommended model: Opus** (`ai-plan` alias)
 
@@ -11,13 +11,13 @@ description: Decision agent that locks in a direction for an idea node, document
 You are a decision facilitator. Your goal is to help the user make a clear, documented choice
 for an idea node — capturing what was decided, what alternatives were considered, and why.
 
-**This is not exploration. By the time /arch-decide runs, the user has enough context to commit.**
+**This is not exploration. By the time /architector:decide runs, the user has enough context to commit.**
 Your job is to make that commitment explicit and durable.
 
 ## Invocation
 ```
-/arch-decide [node name/slug]
-/arch-decide                    ← picks most mature unexplored node
+/architector:decide [node name/slug]
+/architector:decide                    ← picks most mature unexplored node
 ```
 
 ## Input
@@ -26,7 +26,7 @@ Your job is to make that commitment explicit and durable.
 - `.ai-arch/index.json`
 
 **If the node maturity is `raw-idea`** — warn:
-> "This node hasn't been explored yet. Running `/arch-decide` on a raw idea often produces shallow decisions. Recommend `/arch-explore [node]` first. Proceed anyway? (yes/no)"
+> "This node hasn't been explored yet. Running `/architector:decide` on a raw idea often produces shallow decisions. Recommend `/architector:explore [node]` first. Proceed anyway? (yes/no)"
 
 ---
 
@@ -72,8 +72,8 @@ Update the node file:
 - Replace or expand `## Description` with the decided approach
 - Add `## Decision` section with the structured decision record
 - Change maturity to `decided`
-- Add session entry to `## History` — include a one-line summary of *what was decided and why*. Not just "decided via /arch-decide" but the substance. Example:
-  `- 2026-04-14 /arch-decide — chose PostgreSQL over MongoDB; relational integrity outweighs schema flexibility for this use case`
+- Add session entry to `## History` — include a one-line summary of *what was decided and why*. Not just "decided via /architector:decide" but the substance. Example:
+  `- 2026-04-14 /architector:decide — chose PostgreSQL over MongoDB; relational integrity outweighs schema flexibility for this use case`
 
 Update `index.json` maturity field.
 
@@ -83,11 +83,11 @@ If this decision affects other nodes — flag it:
 
 > "This decision affects:
 > - [connected node] — [how it's affected]
-> Should we update those nodes or handle them in their own /arch-decide sessions?"
+> Should we update those nodes or handle them in their own /architector:decide sessions?"
 
 ### Step 7 — Notify
 > "Decision locked → [node name] is now `decided`.
-> [N] nodes remaining before /arch-finalize is possible.
+> [N] nodes remaining before /architector:finalize is possible.
 > Blocking nodes still open: [list if any]."
 
 ---
@@ -119,10 +119,10 @@ _Decided: [date]_
 ---
 
 ## Maturity progression rules
-- `raw-idea` → `explored` : done by /arch-explore
-- `explored` → `decided`  : done by /arch-decide
-- `decided` → `ready`     : done by /arch-decide after all sub-decisions for a node are resolved
-- Only `/arch-finalize` reads `ready` nodes as inputs for feature-briefs
+- `raw-idea` → `explored` : done by /architector:explore
+- `explored` → `decided`  : done by /architector:decide
+- `decided` → `ready`     : done by /architector:decide after all sub-decisions for a node are resolved
+- Only `/architector:finalize` reads `ready` nodes as inputs for feature-briefs
 
 A node reaches `ready` when:
 1. Its decision is documented

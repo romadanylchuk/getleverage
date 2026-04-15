@@ -4,45 +4,47 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-Architector is a **multi-session architecture exploration workflow** implemented as a set of Claude Code skills. It turns raw project ideas into implementation-ready feature briefs. There is no build system, no tests, no runtime code — only skill definitions (SKILL.md files) that Claude Code loads as slash commands.
+**getleverage** is a Claude Code plugin marketplace. It catalogs and hosts plugins that extend Claude Code with new skills, workflows, and integrations. Each plugin lives in its own directory under `plugins/` and is independently installable.
 
-## Skill Pipeline
-
-The skills form a linear pipeline with a feedback loop in the middle:
+## Repository Structure
 
 ```
-/arch-init → /arch-explore ⇄ /arch-map → /arch-decide → /arch-finalize
-                              /arch-status (read-only, anytime)
+.claude-plugin/
+  marketplace.json          ← marketplace manifest (lists all plugins)
+plugins/
+  architector/              ← first plugin
+    .claude-plugin/
+      plugin.json           ← plugin manifest
+    skills/
+      init/SKILL.md
+      explore/SKILL.md
+      map/SKILL.md
+      decide/SKILL.md
+      status/SKILL.md
+      finalize/SKILL.md
+    README.md               ← plugin-specific documentation
 ```
 
-Each skill reads/writes to a `.ai-arch/` directory in the user's project (not this repo).
+## Adding a New Plugin
 
-## Skill Inventory
+1. Create `plugins/<name>/` with:
+   - `.claude-plugin/plugin.json` — plugin manifest (name, version, description, author, keywords)
+   - `skills/<skill-name>/SKILL.md` — one file per skill (YAML frontmatter + skill definition)
+   - `README.md` — plugin documentation
+2. Add an entry to `.claude-plugin/marketplace.json` in the `plugins` array
+3. Each plugin entry needs: `name`, `description`, `category`, `source` (path like `./plugins/<name>`)
 
-| Skill | Dir | Recommended Model | Modifies `.ai-arch/`? |
-|-------|-----|-------------------|----------------------|
-| `/arch-init` | `arch-init/` | Opus | Yes — creates initial structure |
-| `/arch-explore` | `arch-explore/` | Opus | Yes — updates node notes and maturity |
-| `/arch-decide` | `arch-decide/` | Opus | Yes — adds decisions, advances maturity |
-| `/arch-map` | `arch-map/` | Sonnet | Yes — updates connections |
-| `/arch-status` | `arch-status/` | Sonnet | No — read-only |
-| `/arch-finalize` | `arch-finalize/` | Opus | Yes — creates feature briefs and todo list |
+## Plugin Conventions
 
-## Key Concepts
+- **Naming:** lowercase, hyphenated (e.g., `my-plugin`)
+- **Categories:** `development`, `productivity`, `deployment`, `database`, `monitoring`, `security`, `design`, `learning`
+- **Skills:** each skill is self-contained in a single `SKILL.md` with YAML frontmatter (`name`, `description`)
+- **Separation of concerns:** skills within a plugin should have distinct, non-overlapping responsibilities
 
-- **Idea nodes** (`raw-idea → explored → decided → ready`): The unit of work. Each is a `.md` file in `.ai-arch/ideas/`.
-- **Priority levels** (`blocking > core > extension > deferred`): `blocking` nodes gate `/arch-finalize`.
-- **Connections** (dependency, shared concern, conflict, merge/split candidates): Tracked in both node files and `index.json`.
-- **Feature briefs**: Output of `/arch-finalize`, each maps to one run of the implementation workflow (`/interview → /deep-plan → /implement`).
+## Existing Plugins
 
-## Architecture Constraints
+### architector
 
-- Skills must never act outside their role: `/arch-explore` cannot make decisions, `/arch-decide` cannot explore, `/arch-map` never decides.
-- `/arch-decide` must always wait for explicit user confirmation before locking in a choice.
-- `/arch-finalize` has a hard gate: all `blocking` nodes must be `ready`.
-- `/arch-explore` always shows the dashboard before any exploration.
-- `/arch-status` is strictly read-only.
+Multi-session architecture exploration workflow — turns raw project ideas into implementation-ready feature briefs. See [plugins/architector/README.md](plugins/architector/README.md) for full documentation.
 
-## Editing Skills
-
-Each skill is entirely self-contained in a single `SKILL.md` file with YAML frontmatter (`name`, `description`) followed by the skill definition. When modifying a skill, respect the separation of concerns between skills — do not add decision-making to exploration, exploration to mapping, etc.
+Pipeline: `/architector:init` -> `/architector:explore` <-> `/architector:map` -> `/architector:decide` -> `/architector:finalize` (with `/architector:status` available anytime)

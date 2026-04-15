@@ -1,9 +1,9 @@
 ---
-name: arch-init
-description: Brainstorm agent that turns a raw project idea into a structured set of idea nodes. Use when the user says "arch init", "start architecture", "new project", or /arch-init.
+name: init
+description: Brainstorm agent that turns a raw project idea into a structured set of idea nodes. Use when the user says "init", "start architecture", "new project", or /architector:init.
 ---
 
-# Skill: /arch-init
+# Skill: /architector:init
 
 > **Recommended model: Opus** (`ai-plan` alias)
 
@@ -93,7 +93,7 @@ Write `.ai-arch/index.json` using the index schema.
 ### Step 8 — Notify
 > "Project initialised → [N] idea nodes created.
 > Blocking nodes: [list].
-> Run `/arch-explore` to go deeper, or `/arch-map` to see connections."
+> Run `/architector:explore` to go deeper, or `/architector:map` to see connections."
 
 ---
 
@@ -117,10 +117,10 @@ _Slug: [slug]_
 [Anything captured during init — assumptions, open questions, user comments]
 
 ## Connections
-[Other nodes this is related to — filled in by /arch-map]
+[Other nodes this is related to — filled in by /architector:map]
 
 ## History
-- [date] /arch-init — [one-line substance: what this idea captures, e.g. "user wants real-time collaboration; unclear whether WebSocket or SSE"]
+- [date] /architector:init — [one-line substance: what this idea captures, e.g. "user wants real-time collaboration; unclear whether WebSocket or SSE"]
 ```
 
 ---
@@ -146,7 +146,7 @@ _Slug: [slug]_
   "sessions": [
     {
       "date": "[date]",
-      "skill": "arch-init",
+      "skill": "init",
       "summary": "Initial brainstorm — [N] nodes created"
     }
   ]
@@ -157,7 +157,7 @@ _Slug: [slug]_
 
 ## Rules
 - Do not write node files until the user confirms the separation
-- Do not assign `decided` or `ready` maturity during init — that requires /arch-decide
+- Do not assign `decided` or `ready` maturity during init — that requires /architector:decide
 - Do not add implementation details to node files — capture ideas, not solutions
 - If the user dumps a very large description, process it fully before proposing separation
 - `blocking` priority nodes must always be listed explicitly in the final notification
