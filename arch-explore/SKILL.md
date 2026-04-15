@@ -35,7 +35,30 @@ That is the job of `/arch-decide`.
 ### Step 1 — Load State
 Read `index.json` and all node files. Build a full picture of current state.
 
-### Step 2 — Show Dashboard
+### Step 2 — Show "Since Last Session" Summary
+Check the `sessions` array in `index.json`. Find the most recent session that was NOT the current one. Compare the state recorded then to the current state.
+
+If this is the very first session (only `arch-init` in history), skip this step — the dashboard is enough.
+
+Otherwise, show a brief summary before the dashboard:
+
+```
+📝 Since last session ([date], [N] days ago):
+  - Explored: [nodes that moved to explored since then]
+  - Decided: [nodes that moved to decided since then]
+  - New notes on: [nodes that gained ## Notes content]
+  - Open questions left on: [nodes with unresolved questions in ## Notes]
+  - Last node worked on: [node from most recent explore/decide session]
+```
+
+Only show lines that have content — if nothing was decided, omit the "Decided" line. Keep it compact.
+
+If the last session was today (same day), shorten to:
+```
+📝 Earlier today you worked on: [node] ([skill])
+```
+
+### Step 3 — Show Dashboard
 Always show the dashboard before exploring, even when a specific node is requested.
 
 ```
@@ -51,11 +74,28 @@ data-model    ◻ raw  canvas-ui     ◽ exp  export       ◻ raw
 Maturity legend: ◻ raw-idea · ◽ explored · ◈ decided · ✦ ready
 ```
 
+**Map freshness check:** After the dashboard, check `sessions` in `index.json` to find the last `/arch-map` session. Count how many non-map sessions happened since then, and which nodes changed maturity or gained new notes since that date.
+
+If the map is stale, append a line below the dashboard:
+
+```
+🗺️  Map note: last /arch-map was [N] sessions ago. Since then: [node-a] moved to explored, [node-b] has new notes.
+   The board has changed — consider /arch-map to see how ideas connect now.
+```
+
+If `/arch-map` has never run and there are 2+ explored nodes, show:
+
+```
+🗺️  Map note: /arch-map hasn't run yet. With [N] explored nodes, connections may be worth surfacing.
+```
+
+If the map is fresh (no node changes since last map), show nothing — no noise.
+
 If a specific node was requested — show dashboard first, then proceed to that node.
 Otherwise ask:
 > "Which idea would you like to explore? (or 'all blocking' to work through critical gaps)"
 
-### Step 3 — Explore Selected Node
+### Step 4 — Explore Selected Node
 Read the node file in full. Then open a focused discussion.
 
 **Exploration approach — pick what fits the node's current state:**
@@ -75,7 +115,7 @@ For `explored` nodes:
 **Ask max 2 questions at a time.**
 After each answer — update your understanding and continue.
 
-### Step 4 — Capture Exploration Output
+### Step 5 — Capture Exploration Output
 After the discussion reaches a natural pause point, ask:
 > "Should I update the node with what we've discussed?"
 
@@ -83,11 +123,12 @@ If yes — update the node file:
 - Add new information to `## Notes`
 - Update `## Connections` if links to other nodes emerged
 - Change maturity from `raw-idea` to `explored`
-- Add a session entry to `## History`
+- Add a session entry to `## History` — include a one-line summary of the *substance* of the exploration: what was discovered, what shifted, what new question emerged. Not just "explored via /arch-explore" but the thinking delta. Example:
+  `- 2026-04-12 /arch-explore — discovered offline-first conflicts with cloud-sync; leaning toward CRDT but merge semantics still open`
 
 Update `index.json` accordingly.
 
-### Step 5 — Offer Next Step
+### Step 6 — Offer Next Step
 After updating, offer options:
 > "What next?
 > - Continue exploring [this node]

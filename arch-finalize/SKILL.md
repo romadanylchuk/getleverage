@@ -38,6 +38,15 @@ Before proceeding, verify:
    > They can be added in a future /arch-finalize run. Proceed?"
    Wait for confirmation.
 
+3. **Deferred nodes review** — before finalizing, surface all deferred nodes with context:
+   > "You deferred these nodes during the architecture process:
+   > - [node] — deferred since [date] ([N] days ago). Original reason: [from ## Notes if available]
+   > - [node] — deferred since [date] ([N] days ago). Original reason: [from ## Notes if available]
+   >
+   > Now that the architecture is clearer, should any of these move to `core` or `extension` before finalizing?
+   > (They can always be added in a future run — this is your last chance to include them in this batch.)"
+   Wait for confirmation. If the user promotes a node, it must go through `/arch-explore` and `/arch-decide` before it can be included — remind them of this and pause finalization if needed.
+
 ---
 
 ## Process

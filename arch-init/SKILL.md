@@ -120,7 +120,7 @@ _Slug: [slug]_
 [Other nodes this is related to — filled in by /arch-map]
 
 ## History
-- [date] Created via /arch-init
+- [date] /arch-init — [one-line substance: what this idea captures, e.g. "user wants real-time collaboration; unclear whether WebSocket or SSE"]
 ```
 
 ---

@@ -72,7 +72,8 @@ Update the node file:
 - Replace or expand `## Description` with the decided approach
 - Add `## Decision` section with the structured decision record
 - Change maturity to `decided`
-- Add session entry to `## History`
+- Add session entry to `## History` — include a one-line summary of *what was decided and why*. Not just "decided via /arch-decide" but the substance. Example:
+  `- 2026-04-14 /arch-decide — chose PostgreSQL over MongoDB; relational integrity outweighs schema flexibility for this use case`
 
 Update `index.json` maturity field.
 

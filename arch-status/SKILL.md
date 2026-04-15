@@ -80,7 +80,29 @@ SUGGESTED NEXT ACTION
   → /arch-explore tech-stack   (highest priority — unblocks 3 nodes)
 ```
 
-### Step 3 — Open Questions Summary
+### Step 3 — Map Freshness
+Check `sessions` in `index.json` for the last `/arch-map` entry. Count sessions and node changes since then.
+
+```
+MAP FRESHNESS
+  Last /arch-map: [date] ([N] sessions ago)
+  Since then: [node-a] → explored, [node-b] has new notes, [node-c] created
+  ⚠️  The board has shifted — /arch-map would surface new connections
+```
+
+If the map is fresh (no changes since last run), show:
+```
+MAP FRESHNESS
+  Last /arch-map: [date] — up to date ✓
+```
+
+If `/arch-map` has never run:
+```
+MAP FRESHNESS
+  /arch-map has never run. [N] nodes exist — connections are unknown.
+```
+
+### Step 4 — Open Questions Summary
 If any node has unresolved items in `## Notes`, list them:
 
 ```
@@ -89,7 +111,22 @@ OPEN QUESTIONS
   canvas-ui:  "Depends on tech-stack — can't decide rendering approach yet"
 ```
 
-### Step 4 — Path to /arch-finalize
+### Step 5 — Deferred Review
+If there are deferred nodes AND the project is maturing (at least half of blocking nodes are `decided` or `ready`), prompt the user to reconsider them:
+
+```
+DEFERRED REVIEW
+  You have [N] deferred nodes. The project has matured since these were set aside — worth a second look?
+  - analytics — deferred since [date] ([N] days ago). Still deferred?
+  - dark-mode — deferred since [date] ([N] days ago). Still deferred?
+  → To reconsider, run /arch-explore [node] and change priority via /arch-decide
+```
+
+If the project is still early (most blocking nodes are `raw-idea`), skip this section — it's too soon to revisit deferrals.
+
+If there are no deferred nodes, skip this section.
+
+### Step 6 — Path to /arch-finalize
 Calculate what is needed:
 
 ```

@@ -123,14 +123,14 @@ When the user wants to act on a merge or split suggestion:
 **Merge flow:**
 1. Show both nodes side by side
 2. Ask: "What should the merged node be called? What's the unified description?"
-3. Combine notes, connections, and history into a new node file
+3. Combine notes, connections, and history into a new node file. Add a history entry to the merged node: `- [date] /arch-map — merged from [node-a] + [node-b]; [one-line reason, e.g. "both addressed the same WebSocket transport layer"]`
 4. Archive the two source nodes (rename to `[slug].archived.md`)
 5. Update `index.json` — remove old entries, add merged entry
 
 **Split flow:**
 1. Show the node and the two identified concerns
 2. Ask: "What should each part be called?"
-3. Create two new node files — distribute existing notes appropriately
+3. Create two new node files — distribute existing notes appropriately. Add a history entry to each: `- [date] /arch-map — split from [original-node]; [one-line: what this half covers]`
 4. Archive the source node
 5. Update `index.json`
 
