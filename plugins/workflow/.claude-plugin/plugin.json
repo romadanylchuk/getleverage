@@ -1,0 +1,12 @@
+{
+  "name": "workflow",
+  "version": "1.0.0",
+  "description": "AI development workflow — structured pipeline from feature interview to implementation, review, and archival",
+  "author": {
+    "name": "RDanylchuk",
+    "email": "roma.danylchuk@gmail.com"
+  },
+  "repository": "https://github.com/romadanylchuk/getleverage",
+  "license": "MIT",
+  "keywords": ["workflow", "planning", "implementation", "review", "interview", "archival"]
+}

@@ -13,6 +13,13 @@
       "category": "development",
       "source": "./plugins/architector",
       "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/architector"
+    },
+    {
+      "name": "workflow",
+      "description": "AI development workflow — structured pipeline from feature interview to implementation, review, and archival",
+      "category": "development",
+      "source": "./plugins/workflow",
+      "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/workflow"
     }
   ]
 }

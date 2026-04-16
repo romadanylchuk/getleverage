@@ -48,3 +48,9 @@ plugins/
 Multi-session architecture exploration workflow — turns raw project ideas into implementation-ready feature briefs. See [plugins/architector/README.md](plugins/architector/README.md) for full documentation.
 
 Pipeline: `/architector:new` -> `/architector:triage` -> `/architector:explore` <-> `/architector:map` -> `/architector:decide` -> `/architector:finalize` (with `/architector:status` and `/architector:audit` available anytime)
+
+### workflow
+
+AI development workflow — structured pipeline from feature interview to implementation, review, and archival. See [plugins/workflow/README.md](plugins/workflow/README.md) for full documentation.
+
+Pipeline: `/workflow:interview` -> `/workflow:deep-plan` -> `/workflow:implement` -> `/workflow:review` -> `/workflow:final-check` -> `/workflow:document-work-result` -> `/workflow:update-kb-document` -> `/workflow:compact-work`
