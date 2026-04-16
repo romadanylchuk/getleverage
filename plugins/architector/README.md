@@ -30,6 +30,7 @@ Once installed, all skills are available as `/architector:init`, `/architector:e
                  .ai-arch/index.json
                  .ai-arch/ideas/[slug].md  (one per idea node)
 
+/architector:triage                  ← enrich raw ideas with expert discussion points
 /architector:explore                 ← navigate and deepen any node
 /architector:map                     ← visualise connections (use anytime)
 /architector:decide [node]           ← lock in a decision with rationale
@@ -51,6 +52,8 @@ Once installed, all skills are available as `/architector:init`, `/architector:e
 | Situation | Skill |
 |-----------|-------|
 | Starting a new project from scratch | `/architector:init` |
+| Just finished init, want expert prep before exploring | `/architector:triage` |
+| Want to enrich a specific node with discussion points | `/architector:triage [node]` |
 | Want to see all nodes and their status | `/architector:explore` (shows dashboard) |
 | Want to go deeper on a specific idea | `/architector:explore [node]` |
 | Want to understand how ideas relate | `/architector:map` |
@@ -122,6 +125,7 @@ Architect flow and the implementation workflow are separate tracks.
 Architect flow (.ai-arch/)          Implementation workflow (.ai-work/)
 ─────────────────────────           ──────────────────────────────────
 /architector:init                   /interview
+/architector:triage
 /architector:explore     ──────→    /deep-plan
 /architector:map      feature-brief /implement phase-N
 /architector:decide                 /review

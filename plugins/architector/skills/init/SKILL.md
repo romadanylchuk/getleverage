@@ -93,7 +93,8 @@ Write `.ai-arch/index.json` using the index schema.
 ### Step 8 — Notify
 > "Project initialised → [N] idea nodes created.
 > Blocking nodes: [list].
-> Run `/architector:explore` to go deeper, or `/architector:map` to see connections."
+> Run `/architector:triage` to enrich nodes with expert discussion points before exploring.
+> Or jump straight to `/architector:explore` to go deeper, or `/architector:map` to see connections."
 
 ---
 

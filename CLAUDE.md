@@ -47,4 +47,4 @@ plugins/
 
 Multi-session architecture exploration workflow — turns raw project ideas into implementation-ready feature briefs. See [plugins/architector/README.md](plugins/architector/README.md) for full documentation.
 
-Pipeline: `/architector:init` -> `/architector:explore` <-> `/architector:map` -> `/architector:decide` -> `/architector:finalize` (with `/architector:status` and `/architector:review` available anytime)
+Pipeline: `/architector:init` -> `/architector:triage` -> `/architector:explore` <-> `/architector:map` -> `/architector:decide` -> `/architector:finalize` (with `/architector:status` and `/architector:review` available anytime)
