@@ -35,7 +35,7 @@ Once installed, all skills are available as `/architector:new`, `/architector:ex
 /architector:map                     ← visualise connections (use anytime)
 /architector:decide [node]           ← lock in a decision with rationale
 /architector:status                  ← where are we, what's blocking
-/architector:review                  ← audit for gaps, inconsistencies, risks
+/architector:audit                  ← audit for gaps, inconsistencies, risks
 
       ↓ repeat until all blocking nodes reach `ready`
 
@@ -60,8 +60,8 @@ Once installed, all skills are available as `/architector:new`, `/architector:ex
 | Two ideas might be the same thing | `/architector:map [a] [b]` |
 | Ready to commit to a direction | `/architector:decide [node]` |
 | Want a progress snapshot | `/architector:status` |
-| Want to find gaps or inconsistencies | `/architector:review` |
-| Checking one node's decisions in context | `/architector:review [node]` |
+| Want to find gaps or inconsistencies | `/architector:audit` |
+| Checking one node's decisions in context | `/architector:audit [node]` |
 | All blocking nodes are ready | `/architector:finalize` |
 
 ## Idea Node Maturity
@@ -130,7 +130,7 @@ Architect flow (.ai-arch/)          Implementation workflow (.ai-work/)
 /architector:map      feature-brief /implement phase-N
 /architector:decide                 /review
 /architector:status                 /final-check
-/architector:review
+/architector:audit
 /architector:finalize               /document-work-result
                                     /update-kb-document
                                     /compact-work

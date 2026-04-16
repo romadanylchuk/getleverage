@@ -1,9 +1,9 @@
 ---
-name: review
-description: Architecture reviewer that audits .ai-arch/ for missing concerns, decision inconsistencies, depth imbalances, dependency risks, and cross-cutting gaps. Adapts checks to current maturity stage. Use when the user says "review architecture", "check architecture", "audit architecture", "any gaps", or /architector:review.
+name: audit
+description: Architecture auditor that checks .ai-arch/ for missing concerns, decision inconsistencies, depth imbalances, dependency risks, and cross-cutting gaps. Adapts checks to current maturity stage. Use when the user says "audit architecture", "check architecture", "review architecture", "any gaps", or /architector:audit.
 ---
 
-# Skill: /architector:review
+# Skill: /architector:audit
 
 > **Recommended model: Sonnet** (`ai-build` alias)
 
@@ -16,10 +16,10 @@ but to tell them what they're getting wrong or overlooking.
 
 ## Invocation
 ```
-/architector:review                    ← full review
-/architector:review [node]             ← focused review of one node's decisions and context
-/architector:review consistency        ← only cross-node consistency checks
-/architector:review gaps               ← only missing concerns check
+/architector:audit                    ← full review
+/architector:audit [node]             ← focused review of one node's decisions and context
+/architector:audit consistency        ← only cross-node consistency checks
+/architector:audit gaps               ← only missing concerns check
 ```
 
 ## Input
@@ -247,7 +247,7 @@ For each action, indicate which skill to use:
 
 ## Review Variants
 
-**`/architector:review [node]`**
+**`/architector:audit [node]`**
 Focused review of a single node:
 - Is its scope right? Too broad or narrow?
 - Are its decisions consistent with connected nodes?
@@ -255,11 +255,11 @@ Focused review of a single node:
 - Are there reversal risks in its decisions?
 - What cross-cutting concerns does it touch but not own?
 
-**`/architector:review consistency`**
+**`/architector:audit consistency`**
 Run only Step 3 (Decision Consistency) in full depth. Useful when you've just made several decisions
 and want to verify they don't conflict.
 
-**`/architector:review gaps`**
+**`/architector:audit gaps`**
 Run only Step 2 (Missing Concerns) in full depth. Useful early in the process when you want to
 make sure you haven't missed major architectural areas.
 
