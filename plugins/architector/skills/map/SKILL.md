@@ -27,7 +27,7 @@ It does not make decisions. It makes relationships visible so better decisions c
 - `.ai-arch/project-context.md`
 
 **If `.ai-arch/index.json` does not exist** — stop:
-> "No architecture session found. Run `/architector:init` first."
+> "No architecture session found. Run `/architector:new` first."
 
 ---
 

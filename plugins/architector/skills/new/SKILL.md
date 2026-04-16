@@ -1,9 +1,9 @@
 ---
-name: init
-description: Brainstorm agent that turns a raw project idea into a structured set of idea nodes. Use when the user says "init", "start architecture", "new project", or /architector:init.
+name: new
+description: Brainstorm agent that turns a raw project idea into a structured set of idea nodes. Use when the user says "new", "start architecture", "new project", or /architector:new.
 ---
 
-# Skill: /architector:init
+# Skill: /architector:new
 
 > **Recommended model: Opus** (`ai-plan` alias)
 
@@ -121,7 +121,7 @@ _Slug: [slug]_
 [Other nodes this is related to — filled in by /architector:map]
 
 ## History
-- [date] /architector:init — [one-line substance: what this idea captures, e.g. "user wants real-time collaboration; unclear whether WebSocket or SSE"]
+- [date] /architector:new — [one-line substance: what this idea captures, e.g. "user wants real-time collaboration; unclear whether WebSocket or SSE"]
 ```
 
 ---
@@ -147,7 +147,7 @@ _Slug: [slug]_
   "sessions": [
     {
       "date": "[date]",
-      "skill": "init",
+      "skill": "new",
       "summary": "Initial brainstorm — [N] nodes created"
     }
   ]

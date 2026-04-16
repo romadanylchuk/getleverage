@@ -29,7 +29,7 @@ but to tell them what they're getting wrong or overlooking.
 - `.ai-arch/feature-briefs/*.md` — if they exist (post-finalize review)
 
 **If `.ai-arch/index.json` does not exist** — stop:
-> "No architecture session found. Run `/architector:init` first."
+> "No architecture session found. Run `/architector:new` first."
 
 ---
 
@@ -237,7 +237,7 @@ TOP 3 ACTIONS
   3. [Third — e.g., "Run /architector:explore on data-migration before finalizing data-model"]
 
 For each action, indicate which skill to use:
-  → /architector:init (if new nodes needed — user manually creates, or re-run init)
+  → /architector:new (if new nodes needed — user manually creates, or re-run init)
   → /architector:explore [node]
   → /architector:decide [node]
   → /architector:map

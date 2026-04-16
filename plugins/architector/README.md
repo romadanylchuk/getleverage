@@ -20,12 +20,12 @@ cd Architector
 claude --plugin-dir .
 ```
 
-Once installed, all skills are available as `/architector:init`, `/architector:explore`, etc.
+Once installed, all skills are available as `/architector:new`, `/architector:explore`, etc.
 
 ## Flow
 
 ```
-/architector:init [project description]
+/architector:new [project description]
       ↓ creates: .ai-arch/project-context.md
                  .ai-arch/index.json
                  .ai-arch/ideas/[slug].md  (one per idea node)
@@ -51,7 +51,7 @@ Once installed, all skills are available as `/architector:init`, `/architector:e
 
 | Situation | Skill |
 |-----------|-------|
-| Starting a new project from scratch | `/architector:init` |
+| Starting a new project from scratch | `/architector:new` |
 | Just finished init, want expert prep before exploring | `/architector:triage` |
 | Want to enrich a specific node with discussion points | `/architector:triage [node]` |
 | Want to see all nodes and their status | `/architector:explore` (shows dashboard) |
@@ -124,7 +124,7 @@ Architect flow and the implementation workflow are separate tracks.
 ```
 Architect flow (.ai-arch/)          Implementation workflow (.ai-work/)
 ─────────────────────────           ──────────────────────────────────
-/architector:init                   /interview
+/architector:new                   /interview
 /architector:triage
 /architector:explore     ──────→    /deep-plan
 /architector:map      feature-brief /implement phase-N

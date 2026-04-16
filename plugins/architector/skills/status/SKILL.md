@@ -26,7 +26,7 @@ work stands — what's done, what's blocking, and what the path forward looks li
 - `.ai-arch/project-context.md`
 
 **If `.ai-arch/index.json` does not exist** — stop:
-> "No architecture session found. Run `/architector:init` first."
+> "No architecture session found. Run `/architector:new` first."
 
 ---
 
