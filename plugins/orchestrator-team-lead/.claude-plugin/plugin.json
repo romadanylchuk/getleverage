@@ -1,0 +1,12 @@
+{
+  "name": "orchestrator-team-lead",
+  "version": "1.0.0",
+  "description": "Autonomous team-lead that drives the workflow plugin's pipeline over a queue of feature briefs — interview, plan, implement, review, fix, final-check, document, archive — with isolated fresh-context agents per step.",
+  "author": {
+    "name": "RDanylchuk",
+    "email": "roma.danylchuk@gmail.com"
+  },
+  "repository": "https://github.com/romadanylchuk/getleverage",
+  "license": "MIT",
+  "keywords": ["orchestrator", "team-lead", "automation", "workflow", "multi-agent", "autonomous"]
+}

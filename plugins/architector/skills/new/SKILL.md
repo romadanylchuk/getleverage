@@ -74,7 +74,7 @@ After confirmation, classify every node:
 - `raw-idea` — named and described, nothing more
 - `explored` — discussed in depth, tradeoffs surfaced
 - `decided` — approach chosen, rationale documented
-- `ready` — fully specified, can enter /deep-plan workflow
+- `ready` — fully specified, can enter the `/workflow:deep-plan` pipeline
 
 ### Step 5 — Capture Project Context
 Write `.ai-arch/project-context.md` — the shared context document.

@@ -1,12 +1,12 @@
 {
   "name": "workflow",
-  "version": "1.0.0",
-  "description": "AI development workflow — structured pipeline from feature interview to implementation, review, and archival",
+  "version": "2.0.0",
+  "description": "Tech-agnostic AI development workflow — interview, plan, implement, review, final-check, document, archive. Works manually or autonomously when driven by orchestrator-team-lead.",
   "author": {
     "name": "RDanylchuk",
     "email": "roma.danylchuk@gmail.com"
   },
   "repository": "https://github.com/romadanylchuk/getleverage",
   "license": "MIT",
-  "keywords": ["workflow", "planning", "implementation", "review", "interview", "archival"]
+  "keywords": ["workflow", "planning", "implementation", "review", "interview", "archival", "tech-agnostic", "autonomous"]
 }
