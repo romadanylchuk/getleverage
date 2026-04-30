@@ -16,10 +16,17 @@
     },
     {
       "name": "workflow",
-      "description": "AI development workflow — structured pipeline from feature interview to implementation, review, and archival",
+      "description": "Tech-agnostic AI development workflow — interview, plan, implement, review, final-check, document, archive. Manual or autonomous via orchestrator-team-lead.",
       "category": "development",
       "source": "./plugins/workflow",
       "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/workflow"
+    },
+    {
+      "name": "orchestrator-team-lead",
+      "description": "Autonomous team-lead that drives the workflow plugin's pipeline over a queue of feature briefs, with isolated fresh-context agents per step and a per-phase token-budget check",
+      "category": "development",
+      "source": "./plugins/orchestrator-team-lead",
+      "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/orchestrator-team-lead"
     }
   ]
 }

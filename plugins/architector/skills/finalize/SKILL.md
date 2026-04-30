@@ -11,7 +11,7 @@ description: Finalization agent that converts decided idea nodes into feature br
 You are a handoff agent. Your goal is to convert the architecture work into concrete inputs
 for the implementation workflow — one feature brief per implementation stage, plus a master todo list.
 
-**This is the bridge between architect-flow and the /interview → /deep-plan → /implement workflow.**
+**This is the bridge between architect-flow and the `/workflow:interview` → `/workflow:deep-plan` → `/workflow:implement` pipeline.**
 
 ## Input
 - `.ai-arch/index.json`
@@ -95,8 +95,8 @@ Wait for confirmation or adjustments before proceeding.
 ### Step 2 — Write Feature Briefs
 For each confirmed stage, write `.ai-arch/feature-briefs/NN-[slug].md`.
 
-The brief is written to be the starting point for `/interview` (if tech details need clarifying)
-or directly for `/deep-plan` (if the stage is well-specified).
+The brief is written to be the starting point for `/workflow:interview` (if tech details need clarifying)
+or directly for `/workflow:deep-plan` (if the stage is well-specified).
 
 Use the feature brief template below.
 
@@ -109,8 +109,8 @@ Write `.ai-arch/todo-list.md` using the todo list template.
 > Todo list → .ai-arch/todo-list.md
 >
 > Each stage is a starting point for the implementation workflow:
-> - Well-specified stages → /deep-plan directly
-> - Stages with open technical questions → /interview first
+> - Well-specified stages → `/workflow:deep-plan` directly
+> - Stages with open technical questions → `/workflow:interview` first
 >
 > Suggested first stage: [stage 01 name]"
 
@@ -143,15 +143,15 @@ _Arch nodes covered: [list of node slugs]_
 [From the ## Decision sections of covered nodes — rationale included]
 
 ## Open Technical Questions
-[Things that were deliberately left for /interview or /deep-plan to resolve
+[Things that were deliberately left for `/workflow:interview` or `/workflow:deep-plan` to resolve
  because they require codebase context we don't have yet]
 
 ## Out of Scope for This Stage
 [Explicitly: what is NOT part of this stage, even if related]
 
-## Notes for /interview
-[If this stage should go through /interview — what specifically to clarify.
- If /deep-plan directly — say so here.]
+## Notes for `/workflow:interview`
+[If this stage should go through `/workflow:interview` — what specifically to clarify.
+ If `/workflow:deep-plan` directly — say so here.]
 ```
 
 ---
@@ -179,8 +179,8 @@ _Source: .ai-arch/feature-briefs/_
 ## How to Use This List
 Each stage maps to one run of the implementation workflow:
 1. Open the feature brief for the stage
-2. Run `/interview` (if open technical questions exist) or `/deep-plan` directly
-3. Complete the full workflow: /deep-plan → /implement → /final-check
+2. Run `/workflow:interview` (if open technical questions exist) or `/workflow:deep-plan` directly
+3. Complete the full pipeline: `/workflow:deep-plan` → `/workflow:implement` → `/workflow:final-check`
 4. Mark the stage as done in this file
 5. Move to the next stage
 

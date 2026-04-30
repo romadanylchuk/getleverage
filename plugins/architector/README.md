@@ -44,7 +44,7 @@ Once installed, all skills are available as `/architector:new`, `/architector:ex
                  .ai-arch/todo-list.md
 
       ↓ each stage enters the implementation workflow:
-        /interview or /deep-plan → /implement → /final-check
+        /workflow:interview or /workflow:deep-plan → /workflow:implement → /workflow:final-check
 ```
 
 ## When to Use Which Skill
@@ -75,7 +75,7 @@ raw-idea → explored → decided → ready
 | raw-idea | ◻ | Named and described, nothing more |
 | explored | ◽ | Discussed in depth, tradeoffs surfaced |
 | decided  | ◈ | Approach chosen, rationale documented |
-| ready    | ✦ | Fully specified, can enter /deep-plan workflow |
+| ready    | ✦ | Fully specified, can enter the `/workflow:deep-plan` pipeline |
 
 Maturity is advanced by:
 - `raw-idea → explored` : `/architector:explore`
@@ -124,16 +124,15 @@ Architect flow and the implementation workflow are separate tracks.
 ```
 Architect flow (.ai-arch/)          Implementation workflow (.ai-work/)
 ─────────────────────────           ──────────────────────────────────
-/architector:new                   /interview
+/architector:new                    /workflow:interview
 /architector:triage
-/architector:explore     ──────→    /deep-plan
-/architector:map      feature-brief /implement phase-N
-/architector:decide                 /review
-/architector:status                 /final-check
+/architector:explore     ──────→    /workflow:deep-plan
+/architector:map      feature-brief /workflow:implement phase-N
+/architector:decide                 /workflow:review
+/architector:status                 /workflow:final-check
 /architector:audit
-/architector:finalize               /document-work-result
-                                    /update-kb-document
-                                    /compact-work
+/architector:finalize               /workflow:document-work-result
+                                    /workflow:compact-work
 ```
 
 Feature briefs from `/architector:finalize` are the handoff point.
@@ -145,7 +144,7 @@ Each brief is the starting input for one run of the implementation workflow.
 - **Don't rush to `/architector:decide`.** A premature decision on a poorly explored node creates false certainty. Explore first.
 - **Blocking nodes first.** Tech stack, core data model, platform choice — these unblock everything else. Run `/architector:status` to see the dependency chain.
 - **Use deferred honestly.** If an idea won't affect the first implementation pass, mark it deferred. It keeps the map clean and finalization reachable.
-- **Feature briefs don't need to be complete.** If a brief has open technical questions, that's fine — `/interview` will resolve them. The brief just needs enough context to start the conversation.
+- **Feature briefs don't need to be complete.** If a brief has open technical questions, that's fine — `/workflow:interview` will resolve them. The brief just needs enough context to start the conversation.
 - **The todo list is a living document.** Update the status column as stages complete. It becomes your project log.
 
 ## Development

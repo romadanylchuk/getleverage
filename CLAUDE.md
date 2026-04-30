@@ -49,8 +49,18 @@ Multi-session architecture exploration workflow — turns raw project ideas into
 
 Pipeline: `/architector:new` -> `/architector:triage` -> `/architector:explore` <-> `/architector:map` -> `/architector:decide` -> `/architector:finalize` (with `/architector:status` and `/architector:audit` available anytime)
 
-### workflow
+### workflow (v2.0 — tech-agnostic, dual-mode)
 
-AI development workflow — structured pipeline from feature interview to implementation, review, and archival. See [plugins/workflow/README.md](plugins/workflow/README.md) for full documentation.
+Tech-agnostic AI development workflow — interview, plan, implement, review, final-check, document, archive. Driven by `.ai-work/profile.json`. Operates manually or autonomously when an `orchestrator-context.json` sentinel is present. See [plugins/workflow/README.md](plugins/workflow/README.md).
 
-Pipeline: `/workflow:interview` -> `/workflow:deep-plan` -> `/workflow:implement` -> `/workflow:review` -> `/workflow:final-check` -> `/workflow:document-work-result` -> `/workflow:update-kb-document` -> `/workflow:compact-work`
+Pipeline: `/workflow:interview` -> `/workflow:deep-plan` -> `/workflow:implement` -> `/workflow:review` -> `/workflow:final-check` -> `/workflow:document-work-result` -> `/workflow:compact-work`
+
+KB integration (`update-kb-document`) was removed in v2.0 — replaced by `profile.json`, `project-context.md`, and `code-map.json`.
+
+### orchestrator-team-lead
+
+Autonomous team-lead that drives the workflow pipeline over a queue of feature briefs from architector. Each pipeline step runs as an isolated fresh-context Task agent. Includes interview-question routing through Haiku router and Opus expert agents, per-phase token budget check, escalation policy, and auto-maintained code-map. See [plugins/orchestrator-team-lead/README.md](plugins/orchestrator-team-lead/README.md).
+
+Skills: `/orchestrator:bootstrap` (one-time setup) -> `/orchestrator:run` (loop driver). Internal helpers: `/orchestrator:router`, `/orchestrator:expert`, plus non-user-facing `code-map-update`, `code-map-indexer`, `profile-derive`.
+
+Full design contract: [doc/architecture.md](doc/architecture.md).

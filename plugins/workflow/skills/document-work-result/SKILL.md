@@ -1,27 +1,37 @@
 ---
 name: document-work-result
-description: Documentation agent that generates feature documentation from workflow artifacts. Use when the user says "document work", "document result", "generate docs", or /document-work-result.
+description: Documentation agent that generates feature documentation from workflow artifacts. Use when the user says "document work", "document result", "generate docs", or /workflow:document-work-result.
 ---
 
-# Skill: /document-work-result
+# Skill: /workflow:document-work-result
 
-> **Recommended model: Opus** (`ai-plan` alias)
+> **Recommended model: Sonnet**
 
 ## Role
 You are a documentation agent. Your goal is to generate structured feature documentation
 from the workflow artifacts produced during planning and implementation.
 
+## Modes
+
+**Manual mode** (default): no `.ai-work/orchestrator-context.json` present.
+
+**Autonomous mode**: read inputs from `.ai-work/briefs/<current_brief>/`, write outputs there, exit silently after writing.
+
 ## Input
-- `.ai-work/feature-plan.md`
-- `.ai-work/phase-*-result.md` — all phase result files
+
+> **Path notation:** `.ai-work/[briefs/<current_brief>/]<file>` is shorthand for two paths. Manual mode resolves to `.ai-work/<file>`. Autonomous mode resolves to `.ai-work/briefs/<current_brief>/<file>`.
+
+- `.ai-work/[briefs/<current_brief>/]feature-plan.md`
+- `.ai-work/[briefs/<current_brief>/]phase-*-result.md` — all phase result files
+- `.ai-work/[briefs/<current_brief>/]fix-*-result.md` — any fix results
 - The actual changed source files listed in phase results
 
-**Gate:** `.ai-work/final-check-result.md` must exist with status DONE.
+**Gate:** `final-check-result.md` must exist with status DONE.
 If it does not exist or status is not DONE — stop:
-> "Final check not passed. Run `/final-check` first."
+> "Final check not passed. Run `/workflow:final-check` first."
 
 ## Output
-- `.ai-work/feature-docs.md`
+- `feature-docs.md`
 
 ---
 
@@ -30,8 +40,9 @@ If it does not exist or status is not DONE — stop:
 ### Step 1 — Read All Input Artifacts
 1. Read `feature-plan.md` in full
 2. Read all `phase-*-result.md` files
-3. Read `final-check-result.md`
-4. Read the actual changed source files listed in phase results — understand what was built
+3. Read all `fix-*-result.md` files (if any)
+4. Read `final-check-result.md`
+5. Read the actual changed source files listed in phase results
 
 ### Step 2 — Generate Documentation
 Write three sections:
@@ -47,10 +58,10 @@ If `feature-plan.md` has no `## Decision Log` section — write: "No non-obvious
 A Mermaid diagram showing the key relationships: which files depend on which, what calls what, where the data flows. Keep it focused on the feature — do not map the entire codebase.
 
 ### Step 3 — Write Output
-Write `.ai-work/feature-docs.md` using the template below.
+Write `feature-docs.md` using the template below.
 
-### Step 4 — Notify
-> "Documentation generated → `.ai-work/feature-docs.md`. Run `/update-kb-document` to push into KB, or `/compact-work` to archive."
+**Manual mode notify:** "Documentation generated → `feature-docs.md`. Run `/workflow:compact-work` to archive."
+**Autonomous mode:** exit silently.
 
 ---
 
@@ -59,7 +70,7 @@ Write `.ai-work/feature-docs.md` using the template below.
 ```markdown
 # Feature Documentation: [feature name]
 _Date: [date]_
-_Plan: `.ai-work/feature-plan.md`_
+_Plan: `feature-plan.md`_
 
 ## Mental Model
 [One page max. Why the code is structured this way — architecture, key abstractions, how parts fit together.]
