@@ -27,6 +27,13 @@
       "category": "development",
       "source": "./plugins/orchestrator-team-lead",
       "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/orchestrator-team-lead"
+    },
+    {
+      "name": "test-suite",
+      "description": "Universal test-authoring workflow — bootstrap a project knowledge base, brief a test case, implement the test, then verify it actually catches regressions. Tech-agnostic across language, framework, and domain.",
+      "category": "development",
+      "source": "./plugins/test-suite",
+      "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/test-suite"
     }
   ]
 }
