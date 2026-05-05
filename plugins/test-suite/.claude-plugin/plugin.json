@@ -1,0 +1,12 @@
+{
+  "name": "test-suite",
+  "version": "0.1.0",
+  "description": "Universal test-authoring workflow — bootstrap a project knowledge base, brief a test case, implement the test, then verify it actually catches regressions. Tech-agnostic across language, framework, and domain.",
+  "author": {
+    "name": "RDanylchuk",
+    "email": "roma.danylchuk@gmail.com"
+  },
+  "repository": "https://github.com/romadanylchuk/getleverage",
+  "license": "MIT",
+  "keywords": ["testing", "test-automation", "qa", "knowledge-base", "kb", "tech-agnostic", "regression"]
+}

@@ -15,6 +15,7 @@ claude plugin marketplace add romadanylchuk/getleverage
 | [architector](plugins/architector/) | development | Multi-session architecture exploration — turn raw ideas into implementation-ready feature briefs |
 | [workflow](plugins/workflow/) | development | Tech-agnostic AI development workflow — interview, plan, implement, review, final-check, document, archive. Manual or autonomous via orchestrator-team-lead. |
 | [orchestrator-team-lead](plugins/orchestrator-team-lead/) | development | Autonomous team-lead that drives the workflow plugin's pipeline over a queue of feature briefs, with isolated fresh-context agents per step and a per-phase token-budget check |
+| [test-suite](plugins/test-suite/) | development | Universal test-authoring workflow — bootstrap a project knowledge base, brief a test case, implement the test, then verify it actually catches regressions. Tech-agnostic across language, framework, and domain. |
 
 ## Installing a Plugin
 
@@ -22,6 +23,7 @@ claude plugin marketplace add romadanylchuk/getleverage
 claude plugin install architector@getleverage
 claude plugin install workflow@getleverage
 claude plugin install orchestrator-team-lead@getleverage
+claude plugin install test-suite@getleverage
 ```
 
 ## Contributing a Plugin
