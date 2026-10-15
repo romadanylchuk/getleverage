@@ -96,6 +96,6 @@ Exit silently.
 - Walk fast, summarize once, don't deep-dive. The indexer's value is breadth, not depth.
 - Skip large generated files (minified bundles, etc.) — they bloat the map without value.
 - Never read or store actual code content in the map — exports as names only, summaries as prose.
-- Honor `profile.code_map.exclude` strictly.
+- Honor `profile.code_map.exclude` strictly: patterns are globs matched against the project-relative path (e.g. `**/*.test.*` excludes `test/todo.test.js`).
 - Output must be valid JSON, schema-compliant.
 - If the project has no source files matching expectations (empty repo, only docs), write a map with empty `files` and a `patterns` block flagged as inferred-from-empty-tree.

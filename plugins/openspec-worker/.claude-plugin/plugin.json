@@ -1,6 +1,6 @@
 {
   "name": "openspec-worker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Autonomous pipeline on top of OpenSpec — agent-driven interviews with expert routing and escalation, spec deltas validated by the OpenSpec CLI, budgeted phased implementation, review and verify loops, and openspec archive into living specs. Changes can be handed back and forth with manual /opsx:* commands.",
   "author": {
     "name": "RDanylchuk",
