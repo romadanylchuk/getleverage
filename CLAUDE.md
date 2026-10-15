@@ -64,3 +64,11 @@ Autonomous team-lead that drives the workflow pipeline over a queue of feature b
 Skills: `/orchestrator:bootstrap` (one-time setup) -> `/orchestrator:run` (loop driver). Internal helpers: `/orchestrator:router`, `/orchestrator:expert`, plus non-user-facing `code-map-update`, `code-map-indexer`, `profile-derive`.
 
 Full design contract: [doc/architecture.md](doc/architecture.md).
+
+### openspec-worker
+
+Autonomous pipeline on top of OpenSpec (CLI `@fission-ai/openspec`, verified on 1.14.2). Orchestrator and workflow merged into one plugin: OpenSpec owns artifacts (`openspec/changes/<id>/`, living specs in `openspec/specs/`), the worker owns run state in `.openspec-worker/`. Skills read artifact formats at runtime via `openspec instructions <artifact> --json` rather than hardcoding them. Changes hand off both ways with manual `/opsx:*` commands. See [plugins/openspec-worker/README.md](plugins/openspec-worker/README.md).
+
+Skills: `/openspec-worker:bootstrap` -> `/openspec-worker:run` (plus `/openspec-worker:enqueue` for hand-made changes). Pipeline per change: interview (router/expert) -> spec-author -> plan -> implement/review per task group -> verify -> archive.
+
+Full design contract: [doc/openspec-worker.md](doc/openspec-worker.md).

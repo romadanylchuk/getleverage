@@ -34,6 +34,13 @@
       "category": "development",
       "source": "./plugins/test-suite",
       "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/test-suite"
+    },
+    {
+      "name": "openspec-worker",
+      "description": "Autonomous pipeline on top of OpenSpec — agent-driven interviews with expert routing and escalation, validated spec deltas, budgeted phased implementation, review/verify loops, and archive into living specs. Hands changes back and forth with manual /opsx:* commands.",
+      "category": "development",
+      "source": "./plugins/openspec-worker",
+      "homepage": "https://github.com/romadanylchuk/getleverage/tree/main/plugins/openspec-worker"
     }
   ]
 }
