@@ -276,6 +276,8 @@ Expert attempt: ... (confidence: low — rationale: ...)
 <!-- write your answer here, then re-run /openspec-worker:run -->
 ```
 
+Non-interview escalations instead end with a `## Human resolution` checkbox (`- [ ] I fixed the cause above — resume this change on the next run`); the run resumes them only when it is ticked, never merely because there are no answer blocks.
+
 On the next run, if every `#### Human answer` is filled, the run appends those answers to `interview-history.json` with `confidence: "human"` and resumes the interview loop. For non-interview escalations the human fixes the cause (edit artifacts, raise the budget, fix code) and simply re-runs; entry detection (§7) resumes at the right step. To abandon the worker for that change, the human continues with `/opsx:*` and removes the queue row.
 
 ---
@@ -319,6 +321,7 @@ Additionally every OpenSpec CLI call made by the run itself is logged with its c
 | Behavior | Consequence |
 |---|---|
 | `status --json` is file-existence only | Entry detection also checks validity and run-folder state |
+| `isPlanningComplete` includes `tasks`, so it is false until tasks.md exists | Entry detection routes on per-artifact status, never on `isPlanningComplete` |
 | `archive --yes` ignores unchecked tasks | Worker gates on `progress.remaining == 0` |
 | Archive failure = `"archive": null` + `status[]`, exit code not reliable | Parse JSON |
 | `validate --strict` rejects MODIFIED blocks that drop existing scenarios, with fix instructions | spec-author self-fix loop |

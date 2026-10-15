@@ -37,7 +37,10 @@ Design contract: `doc/openspec-worker.md` in the getleverage repo. `$OS` below m
    > "A previous run did not finish (sentinel present, change `<current_change>`). Resume / reset / abort?"
    - resume and reset both continue; entry detection (below) makes resume safe. reset only clears the sentinel first.
    - abort: exit without changes.
-5. For every queue row with status `blocked-needs-human`: if `runs/<id>/escalation.md` exists and every `#### Human answer` block is filled, set the row back to `in-progress` (it will resume). Otherwise leave it blocked. If the requested `<change-id>` (or the first non-done row) is still blocked, stop and say: "Change `<id>` is still blocked — see `.openspec-worker/runs/<id>/escalation.md`."
+5. For every queue row with status `blocked-needs-human`, read `runs/<id>/escalation.md` and decide whether the human has acted:
+   - kind `interview`: every `#### Human answer` block contains text (HTML comments do not count);
+   - any other kind: the `## Human resolution` checkbox is ticked (`- [x]`).
+   If so, set the row back to `in-progress` (it will resume). Otherwise leave it blocked. Never treat "no answer blocks" as resolved. If the requested `<change-id>` (or the first non-done row) is still blocked, stop and say: "Change `<id>` is still blocked — see `.openspec-worker/runs/<id>/escalation.md`."
 
 ## Sentinel
 
@@ -96,7 +99,7 @@ report: "All queued changes done." (list of archived changes)
 ## DETECT(id)
 
 Gather:
-- `S = $OS status --change <id> --json` → `artifacts[]` (id, status), `isPlanningComplete`
+- `S = $OS status --change <id> --json` → `artifacts[]` (id, status)
 - `A = $OS instructions apply --change <id> --json` → `progress`, `state`
 - run folder files: `interview-brief.md`, `plan-notes.md`, `verify-result.md`, `spec-author-report.md`
 
@@ -108,13 +111,14 @@ Decide the first matching row:
 | `tasks` done, `progress.total > 0`, `progress.remaining == 0` | VERIFY LOOP |
 | `tasks` done and `plan-notes.md` exists | GROUP LOOP |
 | `tasks` done, no `plan-notes.md` | PLAN (mode=adopt) |
-| `interview-brief.md` exists and `isPlanningComplete` true and `$OS validate <id> --strict --json` valid | PLAN (mode=new) |
+| `interview-brief.md` exists, `proposal` done, `specs` done or skipped, no `tasks.md`, and `$OS validate <id> --strict --json` valid | PLAN (mode=new) |
 | `interview-brief.md` exists | SPEC-AUTHOR |
 | proposal is the only artifact present and `runs/<id>/brief.md` exists (seeded by bootstrap/enqueue) | INTERVIEW (mode=full) |
 | anything else (human-authored change, partial artifacts) | INTERVIEW (mode=gap) |
 
 Notes:
-- `design` may be legitimately absent (OpenSpec treats it as optional). Treat `isPlanningComplete` as authoritative for planning completeness only together with a strict-valid result.
+- `design` may be legitimately absent (OpenSpec treats it as optional), so it is never required for routing.
+- Do not use `isPlanningComplete` for routing: it includes `tasks`, so it is false for every change that is ready to be planned.
 - Log the decision: `| <time> | detect | — | status/apply JSON | step=<STEP> mode=<mode> | OK |`.
 
 ---
@@ -245,6 +249,8 @@ write runs/<id>/escalation.md:
     <!-- write your answer here, then re-run /openspec-worker:run -->
     ## What to do                     (other kinds)
     <concrete next action: which file to edit, or "continue manually with /opsx:apply <id>">
+    ## Human resolution               (other kinds)
+    - [ ] I fixed the cause above — resume this change on the next run
 append "## Escalation" block with reason + last step + `ls` of runs/<id>/ to run-log.md
 remove run-context.json
 stop the entire run

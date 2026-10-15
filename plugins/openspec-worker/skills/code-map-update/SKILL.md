@@ -20,7 +20,7 @@ After `implement` or a fix. The path is one of:
 - `.openspec-worker/runs/<id>/group-N-result.md` → `## What Was Implemented`
 - `.openspec-worker/runs/<id>/fix-N-<iter>-result.md` or `fix-V-<iter>-result.md` → `## What Was Changed`
 
-Collect the created/modified file paths listed there.
+Collect the created/modified file paths listed there, then drop every path that matches a `profile.code_map.exclude` pattern. Patterns are globs matched against the project-relative path (e.g. `**/*.test.*` excludes `test/todo.test.js`).
 
 ### stale mode — `mode=stale`
 At the start of each run. Collect:
