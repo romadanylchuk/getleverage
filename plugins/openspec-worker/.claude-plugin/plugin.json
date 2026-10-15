@@ -1,0 +1,12 @@
+{
+  "name": "openspec-worker",
+  "version": "1.0.0",
+  "description": "Autonomous pipeline on top of OpenSpec — agent-driven interviews with expert routing and escalation, spec deltas validated by the OpenSpec CLI, budgeted phased implementation, review and verify loops, and openspec archive into living specs. Changes can be handed back and forth with manual /opsx:* commands.",
+  "author": {
+    "name": "RDanylchuk",
+    "email": "roma.danylchuk@gmail.com"
+  },
+  "repository": "https://github.com/romadanylchuk/getleverage",
+  "license": "MIT",
+  "keywords": ["openspec", "spec-driven", "orchestrator", "automation", "workflow", "multi-agent", "autonomous"]
+}
