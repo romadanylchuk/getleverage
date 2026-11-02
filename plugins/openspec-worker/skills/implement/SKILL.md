@@ -46,10 +46,22 @@ If you find something the specs/design/plan did not account for: **do not decide
 - [ ] Consumers of changed contracts updated.
 - [ ] `profile.build.command` passes.
 - [ ] `profile.lint.command` passes (skip if lint is null).
-- [ ] `profile.test.command` passes, no regressions (skip if test is null).
+- [ ] Tests pass, no regressions (skip if `profile.test` is null) — see **Which tests to run**.
 - [ ] Patterns followed.
 - [ ] Actual-file reads cited for every modified or depended-on file.
-Fix and re-verify, max 3 iterations.
+Fix and re-verify, max 3 iterations. Run every command as described in **Running commands**.
+
+#### Which tests to run
+- `profile.test.scoped` set (a command with a `{target}` placeholder): run it once per **affected target** — every target that contains a file you changed, plus every target that directly imports a contract you changed. Also run the test files named in the group's tasks. Do **not** run `profile.test.command`: the full suite runs once, at verify.
+- `profile.test.scoped` null or missing: run `profile.test.command`.
+- Record what ran, e.g. `Tests (scoped: GDK/cli, GDK/contracts): PASS — 412 passed`.
+
+#### Running commands
+- Before any build, lint or test command, set every variable in `profile.env` (bash `export K='V'`, PowerShell `$env:K='V'`). If a command only works with an environment setting that is not in `profile.env`, use it and list it under `## Environment Notes` in your result, so a human can add it to the profile.
+- Run build, lint and test commands in the foreground and pass the shell tool's `timeout` parameter (600000 ms). Without it, a command that runs past the default timeout is moved to the background.
+- If a command still ends up in the background, or needs more than 10 minutes, wait for it **inside this turn**: use the Monitor tool, or wait for its completion notice and then read its output file. **Never end your turn while a command you started is still running** — the run cannot resume you, and the pipeline stalls until a human notices.
+- Do not write your own wait loops in the shell (`sleep`, `until …; do sleep`, `timeout … tail -f /dev/null`). They block or hang; Monitor and the `timeout` parameter replace them.
+- Never write a result with tests marked pending or "still running". The result reports finished commands only.
 
 ### Step 4 — Tick tasks
 For each task of group N that is fully implemented and verified: change `- [ ]` to `- [x]` at its `sourcePath`/`line`. Never tick partial work. Re-run `$OS instructions apply --change <id> --json` and confirm the group's tasks show `done: true`.
@@ -74,7 +86,10 @@ _Change: <id> · Date: YYYY-MM-DD_
 - ...
 
 ## Verification
-- Build: PASS · Lint: PASS/SKIPPED · Tests: PASS/SKIPPED
+- Build: PASS · Lint: PASS/SKIPPED · Tests (scoped: <targets> | full): PASS/SKIPPED — <counts>
+
+## Environment Notes
+None | <variable or setting a command needed that is not in profile.env, and why>
 
 ## Deviations from Plan
 None | <what and why>
@@ -86,7 +101,7 @@ None | <description, which spec/design item is missing or contradictory>
 ## Process — fix mode
 1. Read the report (`review-N-report.md` → Must-fix items; `verify-result.md` → Must and Should items), plus specs, design, plan-notes, and the actual files.
 2. Fix only the reported issues. No refactors beyond them.
-3. Verify (build / lint / test per profile, no regressions).
+3. Verify (build / lint per profile; tests per **Which tests to run**, no regressions), following **Running commands**.
 4. If a fix makes a previously checked task untrue, uncheck it and say so. If the report shows a scenario was never implemented and its task is checked, leave it checked only once the fix implements it.
 5. Write `fix-N-<iter>-result.md` (review) or `fix-V-<iter>-result.md` (verify):
 
@@ -104,3 +119,4 @@ _Change: <id> · Source: review-N | verify · Date: YYYY-MM-DD_
 - Never edit proposal, specs, or design. A spec/design problem is a GAP.
 - Never commit or push.
 - Never tick a task you did not verify.
+- Never end your turn while a command you started is still running.

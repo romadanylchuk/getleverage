@@ -40,6 +40,14 @@ ARCHIVE       gates → "As-built" section in design.md → `openspec archive`
                 → deltas merged into openspec/specs/ (living documentation)
 ```
 
+### Tests and long commands
+
+- **Scoped tests.** Set `test.scoped` in `profile.json` to a command with a `{target}` placeholder, e.g. `npm test -w {target}`. implement and fix then run it only for the parts they touched; the full `test.command` runs once per verify pass. Leave it out and every step runs the full suite.
+- **Environment.** `env` in `profile.json` lists variables every build/lint/test command needs on your machine (a tool home, a temp folder). Agents set them before running commands and report any extra setting they needed under `## Environment Notes`.
+- **No stalls.** Agents run commands in the foreground with a 10-minute timeout and never end their turn while one is still running. If an agent stops without its result file, the run messages it to continue, then escalates; it does not sit idle.
+
+**Upgrading from 1.0:** re-run `/openspec-worker:bootstrap` and keep the profile; it asks only for `test.scoped` and `env` and refreshes the `openspec/config.yaml` block.
+
 ## Where things live
 
 | Path | Owner | What |
@@ -47,7 +55,7 @@ ARCHIVE       gates → "As-built" section in design.md → `openspec archive`
 | `openspec/changes/<id>/` | OpenSpec | proposal, specs deltas, design, tasks — canonical |
 | `openspec/specs/` | OpenSpec | living specs, updated by archive |
 | `openspec/config.yaml` | both | worker writes only a marked block mirroring your profile |
-| `.openspec-worker/profile.json` | worker | language, build/lint/test, patterns, budgets, CLI command |
+| `.openspec-worker/profile.json` | worker | language, build/lint/test (full and scoped), env, patterns, budgets, CLI command |
 | `.openspec-worker/queue.md` | worker | ordered queue with status |
 | `.openspec-worker/runs/<id>/` | worker | interview history, results, reports, run log, escalation |
 | `.openspec-worker/completed/` | worker | run folders of archived changes |

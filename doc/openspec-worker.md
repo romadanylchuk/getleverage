@@ -92,7 +92,8 @@ Same fields as `orchestrator-team-lead`'s profile, plus `openspec`:
   "contracts_first": true,
   "build": { "command": "pnpm build" },
   "lint":  { "command": "pnpm lint" },
-  "test":  { "command": "pnpm test" },
+  "test":  { "command": "pnpm test", "scoped": "pnpm --filter {target} test" },
+  "env":   { "TEMP": "D:\\tmp\\long-temp" },
   "patterns": { "error_handling": "Result types", "naming": "camelCase", "notes": "" },
   "code_map": { "enabled": true, "exclude": ["node_modules", "dist", ".git", "openspec", ".openspec-worker"] },
   "phase_token_budget": 130000,
@@ -107,6 +108,10 @@ Same fields as `orchestrator-team-lead`'s profile, plus `openspec`:
 ```
 
 `openspec.command` is the exact prefix used for every CLI call (e.g. `openspec` or `npx -y @fission-ai/openspec@1.14.2`). Skills never call a bare `openspec`; they use this value. In this document `$OS` stands for it.
+
+**Test tiers (1.1).** `test.command` is the full suite. `test.scoped` (optional) runs the tests of one part of the project, with a `{target}` placeholder (a workspace, package or test folder). When it is set, `implement` (group and fix mode) runs it once per affected target plus the test files its tasks name, and never the full suite; `review` runs no suites; `verify` runs the full suite once per verify pass. When it is null or missing, every step runs `test.command`, as in 1.0. Reason: on a large monorepo (about 5,000 tests, more than 3 minutes) running the full suite in every group dominated implementation time and pushed commands past the shell's foreground timeout.
+
+**Environment (1.1).** `env` holds variables every build/lint/test command needs on this machine. implement, review and verify set them before running commands, so agents do not rediscover the same workaround in every step. An agent that needed a setting missing from `env` reports it under `## Environment Notes` in its result.
 
 ---
 
@@ -123,6 +128,7 @@ rules:
   tasks:
     - Each numbered task group is one implementation phase and must be completable in a single fresh session.
     - Every task states how it is verified, using the project's build/lint/test commands where applicable.
+    - Task verifications run tests with the scoped command (pnpm --filter {target} test) for the affected targets, or name the test files; the full suite runs once, at verify.   ← only when test.scoped is set
 operations:
   apply:
     guidance:
@@ -227,6 +233,9 @@ For group N: `implement group-N` (Sonnet) does the group's tasks, ticks `- [x]` 
 5. Integration audit, build/lint/test, regressions, Out-of-scope items not implemented.
 
 `DONE` or `HAS_ISSUES` (Must/Should). Fixes via `implement fix`; max 3 iterations.
+
+### Running commands and stalls (1.1)
+Sub-agents run build/lint/test in the foreground with the shell tool's `timeout` parameter (600000 ms), wait for long commands inside their turn (Monitor or the completion notice), never write their own sleep/poll loops, and never end their turn while a command they started is still running. `run` treats a step as finished only when its expected output file exists: if it is missing, it messages the same sub-agent to continue (at most twice), then escalates. It never ends its own turn on a sub-agent's "waiting for …" message. Reason: in a 3-day run, two implement agents ended their turn "waiting for tests", the run went idle, and about 15 hours passed before a human noticed.
 
 ### ARCHIVE
 `archive` (Sonnet) — gates (all must hold, otherwise ESCALATE): `verify-result.md` is `DONE`; `progress.remaining == 0`; strict validation passes. Then:
