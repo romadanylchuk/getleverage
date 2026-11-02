@@ -56,6 +56,7 @@ Use the field mapping table below. For each profile field, scan all decisions. M
 | `build.command` | "We build with `<command>`", "Build script: `<command>`" |
 | `lint.command` | Lint tool decisions, or null if explicitly "no linter" or no decision |
 | `test.command` | Test runner decisions, or null if "no tests" or no decision |
+| `test.scoped` | A way to run the tests of one part with a `{target}` placeholder: workspace/monorepo decisions (`npm test -w {target}`, `pnpm --filter {target} test`), or the runner with a path (`npx vitest run {target}`). `"<not decided>"` if unclear |
 | `patterns.error_handling` | Error-handling style decisions ("Result types", "throw with custom errors", "panic + recover") |
 | `patterns.naming` | Naming-convention decisions ("camelCase functions, PascalCase types") |
 | `patterns.notes` | Free-form synthesis of style guidance from `project-context.md` and code-style nodes |
@@ -78,7 +79,8 @@ Write `.openspec-worker/profile.draft.json`:
   "contracts_first": true,
   "build":  { "command": "pnpm build" },
   "lint":   { "command": "pnpm lint" },
-  "test":   { "command": "pnpm test" },
+  "test":   { "command": "pnpm test", "scoped": "pnpm --filter {target} test" },
+  "env": null,
   "patterns": {
     "error_handling": "Result types",
     "naming": "camelCase functions, PascalCase types",
@@ -93,7 +95,7 @@ Write `.openspec-worker/profile.draft.json`:
 
 For fields you cannot fill, use the literal string `"<not decided>"` (for string fields) or `null` (for object fields) so bootstrap can detect them.
 
-Always set `code_map`, `phase_token_budget`, `phase_token_warn_at` to `null` and omit the `openspec` block — these are orchestration-specific and not derivable. Bootstrap asks the user.
+Always set `env`, `code_map`, `phase_token_budget`, `phase_token_warn_at` to `null` and omit the `openspec` block — these are orchestration-specific and not derivable. Bootstrap asks the user.
 
 ### Step 5 — Write Report
 
@@ -120,6 +122,7 @@ _Source: .ai-arch/_
 
 ## Fields Needing User Input
 - `lint.command` — no linter decision in architecture; bootstrap will ask
+- `env` — machine-specific, not derivable
 - `code_map.enabled` / `code_map.exclude` — orchestration-specific
 - `phase_token_budget` / `phase_token_warn_at` — orchestration-specific
 

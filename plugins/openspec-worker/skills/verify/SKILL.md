@@ -41,8 +41,16 @@ Search the codebase beyond the result files: all consumers of changed contracts,
 
 ### Step 5 — Scope and health
 - Nothing listed in Out of Scope (interview brief / proposal) was implemented.
-- `profile.build.command` passes; lint (if non-null) passes on changed and adjacent files; tests (if non-null) pass with no regressions.
+- `profile.build.command` passes; lint (if non-null) passes on changed and adjacent files.
+- Tests (if non-null): run the **full** suite, `profile.test.command`, once — implement and fix steps only ran scoped tests, so this is the regression gate for the whole change. Do not re-run it to confirm a single fix; run that test file alone.
 - Unresolved Should-fix items from review reports are still Should here if present.
+
+## Running commands
+- Before any build, lint or test command, set every variable in `profile.env` (bash `export K='V'`, PowerShell `$env:K='V'`).
+- Run build, lint and test commands in the foreground and pass the shell tool's `timeout` parameter (600000 ms). Without it, a command that runs past the default timeout is moved to the background.
+- If a command still ends up in the background, or needs more than 10 minutes, wait for it **inside this turn**: use the Monitor tool, or wait for its completion notice and then read its output file. **Never end your turn while a command you started is still running** — the run cannot resume you, and the pipeline stalls until a human notices.
+- Do not write your own wait loops in the shell (`sleep`, `until …; do sleep`, `timeout … tail -f /dev/null`).
+- A failure you can show is unrelated to this change (it fails the same way with the change's edits absent, or it is an environment problem named in the output) is listed under `## Regressions` as pre-existing with that evidence; it is not a Must issue.
 
 ## Output
 `.openspec-worker/runs/<id>/verify-result.md`:
@@ -77,7 +85,7 @@ _Date: YYYY-MM-DD_
 None found | ...
 
 ## Build / Lint / Test
-- Build: PASS · Lint: PASS/SKIPPED · Tests: PASS/SKIPPED
+- Build: PASS · Lint: PASS/SKIPPED · Tests (full): PASS/SKIPPED — <counts>
 ```
 
 `DONE` only if there are no Must and no Should issues.
@@ -85,3 +93,4 @@ None found | ...
 ## Rules
 - Read code; never pass a scenario from a result file's claim alone.
 - Never modify code, tasks, or artifacts — report only.
+- Never end your turn while a command you started is still running.

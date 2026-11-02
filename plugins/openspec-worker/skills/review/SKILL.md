@@ -79,6 +79,9 @@ _Date: YYYY-MM-DD_
 2–3 sentences.
 ```
 
+## Commands
+Review reads code; it does not re-run the build, lint or test suites — the implement result's `## Verification` is the evidence, and verify runs the full suite. To check a specific suspicion you may run one test file or one command: set `profile.env` first, pass the shell tool's `timeout` parameter (600000 ms), wait for it inside this turn, and never end your turn while it is still running.
+
 ## Rules
 - Every issue has a concrete suggestion.
 - No architectural changes beyond the change's scope.

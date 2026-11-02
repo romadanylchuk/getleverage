@@ -23,7 +23,8 @@ Design contract: `doc/openspec-worker.md` in the getleverage repo. `$OS` below m
 2. **State lives in files.** `.openspec-worker/profile.json`, `queue.md`, `runs/<id>/`, and the OpenSpec change folder. Re-read them; do not rely on memory.
 3. **Stop on escalation.** Any ESCALATE halts the entire run (see ESCALATE procedure).
 4. **The user does not talk to you mid-run.** Only preflight questions are allowed.
-5. **You may run `$OS` read-only commands yourself** (`status`, `instructions apply`, `validate`, `list`, `--version`) to decide routing. You never write OpenSpec artifacts yourself.
+5. **No idle stalls.** A step is finished only when its expected output file exists. You never end your turn on a sub-agent's "waiting for …" message (see Task tool usage).
+6. **You may run `$OS` read-only commands yourself** (`status`, `instructions apply`, `validate`, `list`, `--version`) to decide routing. You never write OpenSpec artifacts yourself.
 
 ---
 
@@ -271,9 +272,13 @@ Each Task call passes:
 - `subagent_type`: `general-purpose` unless a dedicated agent type exists.
 - `model`: as given above.
 - `description`: short tag, e.g. "implement group 2".
-- `prompt`: names the skill (e.g. "Run the `/openspec-worker:implement group-2` skill"), the working directory, the change id, that `.openspec-worker/run-context.json` is present so the skill runs autonomously, the `$OS` command value, and the exact output files it must produce.
+- `prompt`: names the skill (e.g. "Run the `/openspec-worker:implement group-2` skill"), the working directory, the change id, that `.openspec-worker/run-context.json` is present so the skill runs autonomously, the `$OS` command value, and the exact output files it must produce, and — for implement, fix, review and verify — one line telling the sub-agent: "Run build, lint and test commands in the foreground with the shell tool's `timeout` parameter, wait for every command inside your turn, and never end your turn while a command you started is still running."
 
-After each Task, check the expected output file exists. Missing output → ESCALATE.
+After each Task, check the expected output file exists. If it is missing:
+1. **Resume, don't wait.** If the sub-agent can be continued (SendMessage to its agent id), send: "Your step is not finished: `<expected file>` does not exist. If a command you started is still running, wait for it inside this turn (Monitor, or its completion notice). Then finish the step and write `<expected file>`." Do this at most **2** times per step, checking the file after each reply.
+2. Still missing, or the agent cannot be continued → ESCALATE("<step> ended without <expected file>; last message: <first line of its final message>").
+
+Never end your own turn while a change is in progress, except to wait for a Task you have started (its completion notice resumes you), to ESCALATE, or when the queue is done. A sub-agent's final message saying it is "waiting" for something is not a finished step — handle it with the two rules above, in the same turn.
 
 ## Rules
 - Never write OpenSpec artifacts or source code yourself.

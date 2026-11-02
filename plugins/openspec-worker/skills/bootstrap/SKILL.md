@@ -42,13 +42,17 @@ Run `$OS list --json`.
 
 ## Step 3 — Profile
 
-If `.openspec-worker/profile.json` exists: ask "Profile exists. Keep it? (Y to keep / N to recreate)".
+If `.openspec-worker/profile.json` exists: ask "Profile exists. Keep it? (Y to keep / N to recreate)". On Y, if the profile has no `test.scoped` (and test is not null) or no `env` — a profile from before 1.1 — ask only the **Test and environment fields** below, add the answers, and refresh the managed block in Step 4.
 
 Otherwise build it exactly as `orchestrator-team-lead`'s bootstrap does:
 
 **Path A — architecture available** (`.ai-arch/` with decided/ready nodes): spawn the `profile-derive` helper (Task, Sonnet). It writes `.openspec-worker/profile.draft.json` and `.openspec-worker/profile-derive-report.md`. Show the draft annotated with sources, ask for every `<not decided>` field, then the orchestration fields.
 
 **Path B — no architecture**: ask one at a time: language; type system (strict/loose/none); build command; lint command or none; test command or none; error-handling pattern; naming convention; free-text style notes (→ `project-context.md`).
+
+**Test and environment fields** (both paths, skip `test.scoped` when test is none):
+- `test.scoped` — a command that runs the tests of one part of the project, with a `{target}` placeholder; implement and fix run it per affected target, and only verify runs the full `test.command`. Propose one from the project layout: npm/pnpm/yarn workspaces → `npm test -w {target}` / `pnpm --filter {target} test` / `yarn workspace {target} test`; a single package → `npx vitest run {target}` (target = a test folder or file) or the runner's equivalent. Show the proposal; accept it, edit it, or `none` (then every step runs the full suite, as before).
+- `env` — environment variables every build/lint/test command needs on this machine (e.g. a tool home, a temp folder). Ask: "Do build, lint or tests need any environment variables set? (`NAME=value`, one per line, or none)". Store as an object; default `{}`.
 
 **Orchestration fields** (both paths): `phase_token_budget` (default 130000), `phase_token_warn_at` (default 90000), `code_map.enabled` (default true), `code_map.exclude` (default `["node_modules", "dist", "build", ".git", "openspec", ".openspec-worker", "**/*.test.*"]`).
 
@@ -73,6 +77,7 @@ rules:
   tasks:
     - Each numbered task group is one implementation phase and must be completable in a single fresh session.
     - Every task states how it is verified, using the project's build/lint/test commands where applicable.
+    - <only when test.scoped is set:> Task verifications run tests with the scoped command (<test.scoped>) for the affected targets, or name the test files; the full suite runs once, at verify.
 operations:
   apply:
     guidance:
