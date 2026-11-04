@@ -24,7 +24,8 @@ Design contract: `doc/openspec-worker.md` in the getleverage repo. `$OS` below m
 3. **Stop on escalation.** Any ESCALATE halts the entire run (see ESCALATE procedure).
 4. **The user does not talk to you mid-run.** Only preflight questions are allowed.
 5. **No idle stalls.** A step is finished only when its expected output file exists. You never end your turn on a sub-agent's "waiting for …" message (see Task tool usage).
-6. **You may run `$OS` read-only commands yourself** (`status`, `instructions apply`, `validate`, `list`, `--version`) to decide routing. You never write OpenSpec artifacts yourself.
+6. **Test plans live in the profile.** Never tell a sub-agent which tests to run or skip, which environment settings to use, or which failures are already known. Those come from `profile.json` and the sub-agent's own evidence, so they survive a new session. If a machine limit stops the tests, ESCALATE; a human changes the profile.
+7. **You may run `$OS` read-only commands yourself** (`status`, `instructions apply`, `validate`, `list`, `--version`) to decide routing. You never write OpenSpec artifacts yourself.
 
 ---
 
@@ -204,6 +205,7 @@ iter = 0
 loop:
     Task(Opus, verify, change=<id>)       → verify-result.md
     if status DONE: break
+    if status INCOMPLETE: ESCALATE("verify could not finish test commands: <## Tests Not Finished>; run them differently via test.verify in profile.json")
     if iter == verify_fix cap: ESCALATE("verify fix-loop hit cap with Must/Should issues")
     Task(Opus, implement, args='fix verify "<Must+Should summary>"') → fix-V-<iter>-result.md
     Task(Sonnet, code-map-update, result=fix-V-<iter>-result.md)

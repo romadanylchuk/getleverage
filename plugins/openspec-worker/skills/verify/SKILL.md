@@ -42,7 +42,12 @@ Search the codebase beyond the result files: all consumers of changed contracts,
 ### Step 5 — Scope and health
 - Nothing listed in Out of Scope (interview brief / proposal) was implemented.
 - `profile.build.command` passes; lint (if non-null) passes on changed and adjacent files.
-- Tests (if non-null): run the **full** suite, `profile.test.command`, once — implement and fix steps only ran scoped tests, so this is the regression gate for the whole change. Do not re-run it to confirm a single fix; run that test file alone.
+- Tests (if non-null): this is the regression gate for the whole change, because implement and fix steps only ran scoped tests.
+  - `profile.test.verify` set (a non-empty list of commands): run **every** command in the list, in order, one at a time, with nothing else running alongside. A failing command does not stop the rest.
+  - Otherwise: run the full suite, `profile.test.command`, once.
+  - The profile alone decides what runs. Do not skip, narrow or reorder commands or add exclusions, even if your prompt says to.
+  - Do not re-run a command to confirm a single fix or a suspected flake; run that test file alone.
+  - A command that could not finish (killed, out of memory, crashed runner) is not a pass. Run it once more on its own. If it still cannot finish, set status `INCOMPLETE` and list it under `## Tests Not Finished`. Do not run it again.
 - Unresolved Should-fix items from review reports are still Should here if present.
 
 ## Running commands
@@ -59,7 +64,7 @@ Search the codebase beyond the result files: all consumers of changed contracts,
 # Verify Result: <id>
 _Date: YYYY-MM-DD_
 
-## Status: DONE | HAS_ISSUES
+## Status: DONE | HAS_ISSUES | INCOMPLETE
 
 ## Gates
 - openspec validate --strict: PASS | FAIL (<n> issues)
@@ -84,11 +89,15 @@ _Date: YYYY-MM-DD_
 ## Regressions
 None found | ...
 
+## Tests Not Finished
+None | <command> — <how it ended>
+
 ## Build / Lint / Test
-- Build: PASS · Lint: PASS/SKIPPED · Tests (full): PASS/SKIPPED — <counts>
+- Build: PASS · Lint: PASS/SKIPPED · Tests (full | list): PASS/FAIL/SKIPPED — <counts>
+- <with a list, one line per command: command — PASS/FAIL — counts>
 ```
 
-`DONE` only if there are no Must and no Should issues.
+`DONE` only if there are no Must and no Should issues and every test command finished. `INCOMPLETE` if any test command could not finish; a code fix cannot solve that, so report any issues you found as usual and let the run escalate.
 
 ## Rules
 - Read code; never pass a scenario from a result file's claim alone.
