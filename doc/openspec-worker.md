@@ -111,6 +111,14 @@ Same fields as `orchestrator-team-lead`'s profile, plus `openspec`:
 
 **Test tiers (1.1).** `test.command` is the full suite. `test.scoped` (optional) runs the tests of one part of the project, with a `{target}` placeholder (a workspace, package or test folder). When it is set, `implement` (group and fix mode) runs it once per affected target plus the test files its tasks name, and never the full suite; `review` runs no suites; `verify` runs the full suite once per verify pass. When it is null or missing, every step runs `test.command`, as in 1.0. Reason: on a large monorepo (about 5,000 tests, more than 3 minutes) running the full suite in every group dominated implementation time and pushed commands past the shell's foreground timeout.
 
+**Verify list (1.2).** `test.verify` (optional) is a list of commands, for a project whose full suite cannot run in one go (not enough memory, tests that collide):
+
+```json
+"test": { "command": "npm test --workspaces", "scoped": "npm test -w {target}", "verify": ["npm test -w a", "npm test -w b", "npx vitest run test/slow.test.ts"] }
+```
+
+`verify` runs every command in order, one at a time, instead of `test.command`, and may not skip or narrow them. The list must cover what `test.command` covers. The run orchestrator never puts test choices, environment settings or known failures into sub-agent prompts: anything said only in a session's conversation disappears with that session, and a verify that quietly tested less would still pass. Reason: on one monorepo the orchestrator narrowed verify by prompt after a full run was killed for memory, and most of the slow tests then stopped running anywhere.
+
 **Environment (1.1).** `env` holds variables every build/lint/test command needs on this machine. implement, review and verify set them before running commands, so agents do not rediscover the same workaround in every step. An agent that needed a setting missing from `env` reports it under `## Environment Notes` in its result.
 
 ---
@@ -232,7 +240,7 @@ For group N: `implement group-N` (Sonnet) does the group's tasks, ticks `- [x]` 
 4. **Consistency**: names and behavior in specs, design and code agree (OpenSpec's validator only checks structure).
 5. Integration audit, build/lint/test, regressions, Out-of-scope items not implemented.
 
-`DONE` or `HAS_ISSUES` (Must/Should). Fixes via `implement fix`; max 3 iterations.
+`DONE`, `HAS_ISSUES` (Must/Should) or `INCOMPLETE` (a test command could not finish, even re-run alone → ESCALATE, because a code fix cannot solve it and the human adjusts `test.verify`). Fixes via `implement fix`; max 3 iterations.
 
 ### Running commands and stalls (1.1)
 Sub-agents run build/lint/test in the foreground with the shell tool's `timeout` parameter (600000 ms), wait for long commands inside their turn (Monitor or the completion notice), never write their own sleep/poll loops, and never end their turn while a command they started is still running. `run` treats a step as finished only when its expected output file exists: if it is missing, it messages the same sub-agent to continue (at most twice), then escalates. It never ends its own turn on a sub-agent's "waiting for …" message. Reason: in a 3-day run, two implement agents ended their turn "waiting for tests", the run went idle, and about 15 hours passed before a human noticed.
