@@ -47,9 +47,9 @@ ARCHIVE       gates → "As-built" section in design.md → `openspec archive`
 - **Environment.** `env` in `profile.json` lists variables every build/lint/test command needs on your machine (a tool home, a temp folder). Agents set them before running commands and report any extra setting they needed under `## Environment Notes`.
 - **No stalls.** Agents run commands in the foreground with a 10-minute timeout and never end their turn while one is still running. If an agent stops without its result file, the run messages it to continue, then escalates; it does not sit idle.
 
-- **Verify iterations.** After a fix, verify carries a test command's PASS from the previous iteration when no file changed since that command started; everything else runs again. A verify result with Should issues only gets `verify_should_rounds` fix rounds (default 1); if Should issues remain, the run stops for a human (`blocked-needs-human`), who fixes them or ticks the resolution to accept them, and the archive summary lists accepted items under Follow-ups.
+- **Verify iterations.** After a fix, verify carries a test command's PASS from the previous iteration when no file in the working tree changed since that command started (ignoring `.openspec-worker/` and `openspec/`); everything else runs again.
 
-**Upgrading to 1.2.1:** nothing is required. Set `verify_should_rounds: 3` to keep the 1.2 behaviour for Should issues.
+**Upgrading to 1.2.1:** nothing is required.
 
 **Upgrading to 1.2:** nothing is required. Without `test.verify`, verify runs `test.command` as before.
 

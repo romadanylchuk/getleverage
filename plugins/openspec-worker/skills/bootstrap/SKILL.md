@@ -55,7 +55,7 @@ Otherwise build it exactly as `orchestrator-team-lead`'s bootstrap does:
 - `test.verify` — optional list of commands verify runs one at a time instead of `test.command`, for a project whose full suite cannot run in one go (not enough memory, tests that collide). Ask: "Can the full test suite run in one command on this machine? (Y, or list the commands to run one at a time)". On Y, leave it out. The list must cover everything `test.command` covers.
 - `env` — environment variables every build/lint/test command needs on this machine (e.g. a tool home, a temp folder). Ask: "Do build, lint or tests need any environment variables set? (`NAME=value`, one per line, or none)". Store as an object; default `{}`.
 
-**Orchestration fields** (both paths): `phase_token_budget` (default 130000), `phase_token_warn_at` (default 90000), `verify_should_rounds` (default 1: fix rounds the run spends on a verify result that has Should issues only; after that it stops for a human, who fixes the items or accepts them as follow-ups; 0 stops at once), `code_map.enabled` (default true), `code_map.exclude` (default `["node_modules", "dist", "build", ".git", "openspec", ".openspec-worker", "**/*.test.*"]`).
+**Orchestration fields** (both paths): `phase_token_budget` (default 130000), `phase_token_warn_at` (default 90000), `code_map.enabled` (default true), `code_map.exclude` (default `["node_modules", "dist", "build", ".git", "openspec", ".openspec-worker", "**/*.test.*"]`).
 
 Add the `openspec` block:
 ```json

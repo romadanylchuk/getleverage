@@ -201,18 +201,11 @@ for each group N with unchecked tasks:
 ## VERIFY LOOP
 
 ```
-iter = 0; shouldRounds = 0
+iter = 0
 loop:
     Task(Opus, verify, change=<id>)       → verify-result.md
     if status DONE: break
     if status INCOMPLETE: ESCALATE("verify could not finish test commands: <## Tests Not Finished>; run them differently via test.verify in profile.json")
-    if no Must issues:                                        // Should-only result
-        if exists runs/<id>/escalation-*-resolved.md with Kind verify and Reason starting "Should issues remain":
-            log "verify: Should issues accepted by a human, filed as follow-ups"; break   // archive lists them
-        if shouldRounds == profile.verify_should_rounds (default 1):
-            ESCALATE(kind=verify, "Should issues remain after <shouldRounds> fix round(s): <Should list>")
-            // What to do: fix them by hand, or tick the resolution to archive them as follow-ups
-        shouldRounds++
     if iter == verify_fix cap: ESCALATE("verify fix-loop hit cap with Must/Should issues")
     Task(Opus, implement, args='fix verify "<Must+Should summary>"') → fix-V-<iter>-result.md
     Task(Sonnet, code-map-update, result=fix-V-<iter>-result.md)
