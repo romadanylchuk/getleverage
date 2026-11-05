@@ -206,6 +206,8 @@ loop:
     Task(Opus, verify, change=<id>)       → verify-result.md
     if status DONE: break
     if status INCOMPLETE: ESCALATE("verify could not finish test commands: <## Tests Not Finished>; run them differently via test.verify in profile.json")
+    if no Must issues and not profile.verify_fix_should:
+        log "verify: Should-only, filed as follow-ups"; break   // archive copies them into its Follow-ups
     if iter == verify_fix cap: ESCALATE("verify fix-loop hit cap with Must/Should issues")
     Task(Opus, implement, args='fix verify "<Must+Should summary>"') → fix-V-<iter>-result.md
     Task(Sonnet, code-map-update, result=fix-V-<iter>-result.md)
