@@ -98,7 +98,7 @@ None | <command> — <how it ended>
 - <with a list, one line per command: command — PASS/FAIL/PASS (carried from iter <n>) — counts — started <ISO time>>
 ```
 
-`DONE` only if there are no Must and no Should issues and every test command finished. `INCOMPLETE` if any test command could not finish; a code fix cannot solve that, so report any issues you found as usual and let the run escalate. A Should issue is one the archived specs do not depend on: a scenario that is implemented and tested but a wording, structure, documentation or test-depth point remains. Anything the specs or design require is a Must. The run fixes Should issues only when `profile.verify_fix_should` is true; otherwise `archive` files them as follow-ups.
+`DONE` only if there are no Must and no Should issues and every test command finished. `INCOMPLETE` if any test command could not finish; a code fix cannot solve that, so report any issues you found as usual and let the run escalate. A Should issue is one the archived specs do not depend on: a scenario that is implemented and tested but a wording, structure, documentation or test-depth point remains. Anything the specs or design require is a Must. The run fixes Should issues for `profile.verify_should_rounds` rounds (default 1); what remains then stops the run for a human, who fixes the items or accepts them, and `archive` files accepted items as follow-ups.
 
 ## Rules
 - Read code; never pass a scenario from a result file's claim alone.

@@ -14,7 +14,7 @@ Finish a verified change: document how it was actually built, merge its spec del
 `.openspec-worker/run-context.json` → `<id>`. `$OS` = `profile.openspec.command`.
 
 ## Step 1 — Gates (all must pass; otherwise write `archive-summary.md` with `Status: BLOCKED` and the failed gate, and exit)
-1. `.openspec-worker/runs/<id>/verify-result.md` exists with `Status: DONE`, or with `Status: HAS_ISSUES` and no Must issues (Should-only; those go to `## Follow-ups`).
+1. `.openspec-worker/runs/<id>/verify-result.md` exists with `Status: DONE`, or with `Status: HAS_ISSUES`, no Must issues, and a resolved verify escalation in the run folder (a human accepted the Should items; they go to `## Follow-ups`).
 2. `$OS instructions apply --change <id> --json` → `progress.remaining == 0` and `progress.total > 0`. **Required: `openspec archive --yes` does not check this itself.**
 3. `$OS validate <id> --strict --json` → `items[0].valid == true`.
 
